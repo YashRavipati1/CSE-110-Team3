@@ -11,6 +11,6 @@ try {
   console.error(e);
 }
 
-let db = conn.db("FitFuel");
+let db = conn.db(process.env.DB_NAME);
 
 export default db;
