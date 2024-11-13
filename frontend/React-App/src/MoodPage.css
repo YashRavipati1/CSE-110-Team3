@@ -1,0 +1,98 @@
+
+/* Centralized CSS for buttons*/
+.button {
+    appearance: none;
+    background-color: #2ea44f;
+    border: 1px solid rgba(27, 31, 35, .15);
+    border-radius: 6px;
+    bottom: 30px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-size: 16px; /* Increased font size */
+    font-weight: 600;
+    line-height: 24px; /* Adjusted line height */
+    padding: 8px 20px; /* Increased padding */
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  
+  .button:focus:not(:focus-visible):not(.focus-visible) {
+    box-shadow: none;
+    outline: none;
+  }
+  
+  .button:hover {
+    background-color: #2c974b;
+  }
+  
+  .button:focus {
+    box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
+    outline: none;
+  }
+  
+  .button:disabled {
+    background-color: #94d3a2;
+    border-color: rgba(27, 31, 35, .1);
+    color: rgba(255, 255, 255, .8);
+    cursor: default;
+  }
+  
+  .button:active {
+    background-color: #298e46;
+    box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+  }
+  
+  /*CSS styling for div/ container for slider*/
+  .sliderBox {
+    width: 90%;
+    margin: 20px auto;
+    color: #130606;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  .sliderBox .header {
+    background-color: #a3db9f; /* Blue header, or choose another vibrant color */
+    padding: 10px;
+    font-size:20px;
+    text-align: left;
+    font-weight: bold;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  
+  .sliderBox .body {
+    background-color: #f8f9fa; 
+    padding: 15px;
+    height: 15vh;
+    text-align: center;
+    color: #333;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  
+  .button-container {
+    position: fixed; /* Fixed positioning to keep the buttons at the bottom */
+    bottom: 0; /* Aligns the container at the bottom of the viewport */
+    left: 0;
+    width: 100%; /* Ensures the container spans the width of the viewport */
+    display: flex; /* Enables flexbox properties */
+    justify-content: space-between; /* Distributes space between children */
+    padding: 10px 20px; /* Adds some padding inside the container */
+    box-sizing: border-box; /* Includes padding in the width calculation */
+  }
+  
+  #header-phrase{
+    text-align: left;
+    padding: 2%;
+  }

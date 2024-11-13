@@ -1,0 +1,80 @@
+/* Container styling for the slider and value text */
+.range-slider-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    padding-top:30px;
+  }
+  
+  /* Styling for the range input (slider) */
+  .range-slider-container input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, #007bff 0%, #007bff var(--value-percent), #ddd var(--value-percent), #ddd 100%);
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  /* Styling for the ticks container */
+  .ticks {
+    position: absolute;
+    top: 20px; /* Adjusts the tick position below the slider */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none; /* Prevents ticks from interfering with slider interaction */
+  }
+  
+  .tick {
+    position: absolute;
+    text-align: center;
+    transform: translateX(-50%);
+  }
+  
+  .tick-label {
+    font-size: 12px;
+    color: #333;
+    margin-top: 4px;
+  }
+  
+  .tick::before {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 8px;
+    background-color: #333;
+    margin: 0 auto;
+  }
+  
+  /* Styling for the slider thumb */
+  .range-slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background-color: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  .range-slider-container input[type="range"]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background-color: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Styling for the value text next to the slider */
+  .range-slider-container span {
+    font-size: 14px;
+    color: #333;
+  }

@@ -5,6 +5,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
+//added a polyfill for process -- this is a temporary fix 
+//import process from 'process';
+//window.process = process;
+
+// Check if the API key is being logged correctly
+//console.log(process.env.REACT_APP_FIREBASE_API_KEY);  
+
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
