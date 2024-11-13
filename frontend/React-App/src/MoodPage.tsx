@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import RangeSlider from './RangeSlider';
 import './rangeSlider.css';
 import './MoodPage.css';
+import { createMoodEntry } from './services/mood';
 
 const MoodPage: React.FC = () => {
+    const [happiness, setHappiness] = useState(0);
+    const [stress, setStress] = useState(0);
+    const [energy, setEnergy] = useState(0);
+
     const handleSubmit = () => {
-        console.log("Submit button clicked");
+        createMoodEntry({ happiness, stress, energy });
     };
-    const handleBack = () =>{
+
+    const handleBack = () => {
         console.log("Back button clicked");
     }
 
-    function MoodValueBox({ headerText }: { headerText: string }) { // Accept headerText as a prop
+    function MoodValueBox({ headerText, value, onChange }: { headerText: string, value: number, onChange: (value: number) => void }) { // Accept headerText, value, and onChange as props
         return (
             <div className="sliderBox">
                 <div className="header">{headerText}</div> 
                 <div className="body">
-                <RangeSlider min={0} max={10} step={1} onChange={(value) => console.log(value)} />
+                <RangeSlider min={0} max={10} step={1} value={value} onChange={onChange} />
                 </div>
             </div>
         );
@@ -27,9 +33,9 @@ const MoodPage: React.FC = () => {
         <div>
             <h1 id ="header-phrase">How are you feeling today? </h1>
 
-            <MoodValueBox headerText="Happiness" />
-            <MoodValueBox headerText="Stress" />
-            <MoodValueBox headerText="Energy" />
+            <MoodValueBox headerText="Happiness" value={happiness} onChange={setHappiness} />
+            <MoodValueBox headerText="Stress" value={stress} onChange={setStress} />
+            <MoodValueBox headerText="Energy" value={energy} onChange={setEnergy} />
 
              {/*Buttons placed on the bottom */}
             <div className ="button-container"> 
