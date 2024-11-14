@@ -1,10 +1,19 @@
-type MoodAnswers = {
+export type moodAnswers = {
     happiness: number;
     stress: number;
     energy: number;
 };
 
-export const createMoodEntry = async (answers: MoodAnswers) => {
+export type moodEntry = {
+    _id: string;
+    happiness: number;
+    stress: number;
+    energy: number;
+    date: string;
+    evaluatedMood : string
+}
+
+export const createMoodEntry = async (answers: moodAnswers) => {
     const entry = {
         happiness: answers.happiness,
         stress: answers.stress,
@@ -12,7 +21,6 @@ export const createMoodEntry = async (answers: MoodAnswers) => {
         date: new Date().toISOString(),
         evaluatedMood : ""
     }
-    console.log(entry);
     // Change hardcoded port to .env port
     const response = await fetch('http://localhost:8080/mood', {
         method: 'POST',
@@ -22,5 +30,5 @@ export const createMoodEntry = async (answers: MoodAnswers) => {
         body: JSON.stringify(entry),
     });
     const data = await response.json();
-    return data.insertedId;
+    return {success: true, id: data.insertedId}
 };

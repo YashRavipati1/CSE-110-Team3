@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import RangeSlider from './RangeSlider';
 import './rangeSlider.css';
 import './MoodPage.css';
-import { createMoodEntry } from './services/mood';
+import { createMoodEntry } from '../api/mood';
 
 const MoodPage: React.FC = () => {
     const [happiness, setHappiness] = useState(0);
