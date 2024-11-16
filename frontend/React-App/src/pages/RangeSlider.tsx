@@ -5,16 +5,14 @@ interface RangeSliderProps {
   min: number;
   max: number;
   step: number;
-  initialValue?: number;
+  value: number;
   onChange?: (value: number) => void;
 }
 
-const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, step, initialValue = min, onChange }) => {
-  const [value, setValue] = useState<number>(initialValue);
+const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, step, onChange, value }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(event.target.value);
-    setValue(newValue);
     onChange && onChange(newValue);
   };
 

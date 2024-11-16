@@ -7,16 +7,21 @@ const router = express.Router();
 router.get("/", async (req, res) => {
     let collection = await db.collection("users");
     let results = await collection.find({}).toArray();
-    console.log(results);
     res.send(results).status(200);
 });
 
-router.get("/:id", async (req, res) => {
-    let query = { _id: ObjectId(req.params.id) };
-    let collection = await db.collection("users");
-    let results = await collection.findOne(query);
-    console.log(results);
-    res.send(results).status(200);
+router.get("/:email", async (req, res) => {
+    try {
+        let query = { email: req.params.email };
+        let collection = await db.collection("users");
+        let results = await collection.findOne(query);
+        if (!results) {
+            return res.send({ user: null });
+        }
+        res.send({ user: results });
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
 });
 
 router.post("/", async (req, res) => {

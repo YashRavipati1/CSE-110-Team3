@@ -7,7 +7,6 @@ const router = express.Router();
 router.get("/", async (req, res) => {
     let collection = await db.collection("nutritionEntries");
     let results = await collection.find({}).toArray();
-    console.log(results);
     res.send(results).status(200);
 });
 
@@ -15,7 +14,6 @@ router.get("/:id", async (req, res) => {
     let query = { _id: ObjectId(req.params.id) };
     let collection = await db.collection("nutritionEntries");
     let results = await collection.findOne(query);
-    console.log(results);
     res.send(results).status(200);
 });
 
