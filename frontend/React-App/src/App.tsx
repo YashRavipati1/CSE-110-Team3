@@ -6,10 +6,13 @@ import { AuthContext } from './contexts/AuthContext';
 import './App.css';
 
 
+import MealPage from './pages/MealPage';
+
 function App() {
   const { signedIn } = useContext(AuthContext);
   return (
-    <BrowserRouter>
+    <MealPage />
+    /*<BrowserRouter>
       <Routes>
         {!signedIn && (
           <>
@@ -25,7 +28,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </>
       )}
-    </BrowserRouter>
+    </BrowserRouter>*/
   );
 }
 

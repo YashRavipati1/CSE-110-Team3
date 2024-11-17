@@ -1,0 +1,58 @@
+/* Zere: styling for customizable button component */
+.button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    opacity: 0.9;
+  }
+  
+  .button.small {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+  
+  .button.medium {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+  
+  .button.large {
+    font-size: 20px;
+    padding: 14px 28px;
+  }
+  
+  @media (max-width: 768px) {
+    .button.small {
+      font-size: 10px;
+      padding: 4px 8px;
+    }
+    .button.medium {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+    .button.large {
+      font-size: 18px;
+      padding: 12px 24px;
+    }
+  }
+  .button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);  
+  }
+  
+  .button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
