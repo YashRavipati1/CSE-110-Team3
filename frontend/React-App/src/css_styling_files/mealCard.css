@@ -1,0 +1,38 @@
+.meal-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin: 20px;
+    position: relative;
+}
+
+.meal-info {
+    flex: 1;
+}
+
+.meal-buttons {
+    position: absolute;  /* Positions the container relative to the card */
+    right: 10px;         /* Aligns container to the right edge */
+    top: 10px;           /* Aligns container to the top edge */
+    bottom: 10px;        /* Aligns container to the bottom edge */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures buttons are spaced out vertically */
+    height: calc(100% - 20px); /* Full height minus padding to prevent overflow */
+}
+
+.delete-button, .edit-button {
+    /* No specific positioning needed */
+    /* You can add styles like padding, background color as needed here */
+}
+
+.button {
+    /* Base button styles if needed, e.g., border, padding, background color */
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: #f0f0f0; /* Example background color */
+}

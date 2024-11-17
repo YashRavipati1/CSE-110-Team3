@@ -7,10 +7,13 @@ import { AuthContext, AuthProvider } from './contexts/AuthContext';
 import './App.css';
 
 
+import MealPage from './pages/MealPage';
+
 function AppRouter() {
   const { signedIn } = useContext(AuthContext);
   return (
-      <BrowserRouter>
+      <MealPage />
+    /*<BrowserRouter>
         <Routes>
           {!signedIn && (
             <>
@@ -20,15 +23,13 @@ function AppRouter() {
           )}
         </Routes>
 
-        <Routes>
-        {signedIn && (
-          <>
-            <Route path="/" element={<Home />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </>
-        )}
-        </Routes>
-      </BrowserRouter>
+      {signedIn && (
+        <>
+          <Route path="/" element={<MoodPage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </>
+      )}
+    </BrowserRouter>
   );
 }
 function App() {
@@ -39,4 +40,5 @@ function App() {
   );
 }
 
-export default App;
+export default App;*/
+  )};
