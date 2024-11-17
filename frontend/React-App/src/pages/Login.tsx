@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { createUser } from "../api/users";
+import { AuthContext } from "../contexts/AuthContext";
 
 import Button from "react-bootstrap/Button";
 
