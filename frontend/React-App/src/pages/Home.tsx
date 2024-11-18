@@ -4,6 +4,8 @@ import { AuthContext, AuthProvider } from "../contexts/AuthContext";
 import React, { useContext } from "react";
 import { getNutritionForUser } from "../api/nutrition";
 import { NavButton } from "../components/navButton";
+import { signOut } from "firebase/auth";
+import { auth } from '../firebase';
 
 const HomeContainer = styled.div`
     display: flex;
@@ -41,6 +43,14 @@ const NavRow = styled.div`
     bottom: 20%;
 `;
 
+const LogoutButton = styled.button`
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #007bff;
+    color: white;
+`;
+
 export const Home = () => {
     const { currentUser } = useContext(AuthContext);
     const [nutritionData, setNutritionData] = React.useState({ calories: 0, protein: 0, fats: 0, carbohydrates: 0 });
@@ -55,7 +65,6 @@ export const Home = () => {
                 let fats = 0;
                 let carbohydrates = 0;
                 for (const meal of meals) {
-                    console.log(meal);
                     calories += meal.calories;
                     protein += meal.protein;
                     fats += meal.fats;
@@ -67,9 +76,16 @@ export const Home = () => {
         fetchNutrition();
     }, [currentUser]);
 
+    const logout = () => {
+        signOut(auth).then(() => {
+            console.log("User signed out");
+        })
+    };
+
     return (
         <AuthProvider>
             <HomeContainer>
+                <LogoutButton onClick={logout}>Logout</LogoutButton>
                 <MacroContainer>
                     <MacroTitle>MacroNutrients</MacroTitle>
                     <MacroTracker type="Calories" amount={nutritionData.calories} goal={2000}/>
