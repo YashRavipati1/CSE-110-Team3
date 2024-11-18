@@ -74,6 +74,7 @@ export const Home = () => {
             }
         };
         fetchNutrition();
+        console.log("user email: ", currentUser?.email)
     }, [currentUser]);
 
     const logout = () => {
