@@ -9,7 +9,7 @@ export type nutritionRecord = {
 };
 
 export const getNutritionForUser = async (email: string, date: Date) => {
-    const response = await fetch(`http://localhost:8080/nutrition/${email}/${date.toISOString()}`, {
+    const response = await fetch(`http://localhost:8080/nutrition/${email}/${date.toISOString().split('T')[0]}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

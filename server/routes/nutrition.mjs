@@ -18,7 +18,8 @@ router.get("/:id", async (req, res) => {
 });
 
 router.get("/:email/:date", async (req, res) => {
-    let query = { user: req.params.email };
+    let query = { user: req.params.email, date: req.params.date };
+    console.log(req.params.date);
     let collection = await db.collection("nutritionEntries");
     let results = await collection.find(query).toArray();
     res.send(results).status(200);
