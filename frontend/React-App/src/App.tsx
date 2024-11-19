@@ -6,6 +6,7 @@ import { Profile } from './pages/Profile';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './contexts/AuthContext';
 import { DataProvider, DataContext } from './contexts/DataContext';
+import WeightTracker from './components/WeightTracker';
 import './App.css';
 
 
