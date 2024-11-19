@@ -1,31 +1,41 @@
 import React, {useContext} from 'react';
 import { Login } from './pages/Login';
 import MoodPage from './pages/MoodPage';
+import { Home } from './pages/Home';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { AuthContext } from './contexts/AuthContext';
+import { AuthContext, AuthProvider } from './contexts/AuthContext';
 import './App.css';
 
 
-function App() {
+function AppRouter() {
   const { signedIn } = useContext(AuthContext);
   return (
-    <BrowserRouter>
-      <Routes>
-        {!signedIn && (
+      <BrowserRouter>
+        <Routes>
+          {!signedIn && (
+            <>
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<Navigate to="/login" />} />
+            </>
+          )}
+        </Routes>
+
+        <Routes>
+        {signedIn && (
           <>
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<Navigate to="/login" />} />
+            <Route path="/" element={<Home />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </>
         )}
-      </Routes>
-
-      {signedIn && (
-        <>
-          <Route path="/" element={<MoodPage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </>
-      )}
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+  );
+}
+function App() {
+  return (
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
   );
 }
 
