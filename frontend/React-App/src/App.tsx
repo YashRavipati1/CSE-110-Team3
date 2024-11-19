@@ -4,6 +4,7 @@ import MoodPage from './pages/MoodPage';
 import { Home } from './pages/Home';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './contexts/AuthContext';
+import WeightTracker from './components/WeightTracker';
 import './App.css';
 
 
