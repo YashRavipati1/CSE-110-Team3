@@ -4,6 +4,7 @@ import { AuthContext, AuthProvider } from "../contexts/AuthContext";
 import React, { useContext } from "react";
 import { getNutritionForUser } from "../api/nutrition";
 import { NavButton } from "../components/navButton";
+import WeightTracker from "../components/WeightTracker";
 import { signOut } from "firebase/auth";
 import { auth } from '../firebase';
 import WeightTracker from "../components/WeightTracker";
@@ -42,6 +43,21 @@ const NavRow = styled.div`
     width: 100%;
     position: absolute;
     bottom: 20%;
+`;
+
+const StyledWeightTracker = styled.div`
+    position: absolute; 
+    top: 90px; 
+    right: 150px; 
+    width: 900px; 
+    height: 500px; 
+    background-color: #f9f9f9;
+    border: 2px solid #d1d1d1;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const LogoutButton = styled.button`
