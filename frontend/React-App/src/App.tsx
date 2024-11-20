@@ -7,17 +7,19 @@ import './App.css';
 
 
 import MealPage from './pages/MealPage';
+import AddMealPage from './pages/AddMeal';
 
 function App() {
   const { signedIn } = useContext(AuthContext);
   return (
-    <MealPage />
-    /*<BrowserRouter>
+    <BrowserRouter>
       <Routes>
         {!signedIn && (
           <>
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<Navigate to="/login" />} />
+            <Route path="/meal-list" element={<MealPage />} />
+            <Route path="/add-meal" element={<AddMealPage />} />
           </>
         )}
       </Routes>
@@ -28,7 +30,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </>
       )}
-    </BrowserRouter>*/
+    </BrowserRouter>
   );
 }
 
