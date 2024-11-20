@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../components/Button';
 import '../css_styling_files/mealCard.css';
-// Import or define the Meal interface here
+// Import Meal interface in future
 interface Meal {
     id: number;
     name: string;
