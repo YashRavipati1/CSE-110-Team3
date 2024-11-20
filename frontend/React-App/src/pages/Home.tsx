@@ -4,8 +4,8 @@ import { AuthContext, AuthProvider } from "../contexts/AuthContext";
 import React, { useContext } from "react";
 import { getNutritionForUser } from "../api/nutrition";
 import { NavButton } from "../components/navButton";
-import { signOut } from "firebase/auth";
-import { auth } from '../firebase';
+import { Logout } from "../components/LogoutButton";
+import { Link } from "react-router-dom";
 
 const HomeContainer = styled.div`
     display: flex;
@@ -13,7 +13,6 @@ const HomeContainer = styled.div`
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #c1f1f7;
 `;
 
 const MacroContainer = styled.div`
@@ -43,12 +42,16 @@ const NavRow = styled.div`
     bottom: 20%;
 `;
 
-const LogoutButton = styled.button`
+const ProfileButton = styled(Link)`
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: transparent;
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #007bff;
-    color: white;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    border: none;
+    outline: none;
 `;
 
 export const Home = () => {
@@ -74,19 +77,11 @@ export const Home = () => {
             }
         };
         fetchNutrition();
-        console.log("user email: ", currentUser?.email)
     }, [currentUser]);
-
-    const logout = () => {
-        signOut(auth).then(() => {
-            console.log("User signed out");
-        })
-    };
 
     return (
         <AuthProvider>
             <HomeContainer>
-                <LogoutButton onClick={logout}>Logout</LogoutButton>
                 <MacroContainer>
                     <MacroTitle>MacroNutrients</MacroTitle>
                     <MacroTracker type="Calories" amount={nutritionData.calories} goal={2000}/>
@@ -94,10 +89,14 @@ export const Home = () => {
                     <MacroTracker type="Fats" amount={nutritionData.fats} goal={100}/>
                     <MacroTracker type="Carbohydrates" amount={nutritionData.carbohydrates} goal={300}/>
                 </MacroContainer>
+                <Logout />
+                <ProfileButton to={"/profile"}>
+                    <img src={"profile.svg"} alt="Profile" />
+                </ProfileButton>
                 <NavRow>
-                    <NavButton text="Food" route="/nutrition" />
-                    <NavButton text="Mood" route="/mood" />
-                    <NavButton text="Exercise" route="/exercise" />
+                    <NavButton text="Food   +" route="/nutrition" />
+                    <NavButton text="Mood   +" route="/mood" />
+                    <NavButton text="Exercise   +" route="/exercise" />
                 </NavRow>
             </HomeContainer>
         </AuthProvider>

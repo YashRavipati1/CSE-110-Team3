@@ -2,8 +2,10 @@ import React, {useContext} from 'react';
 import { Login } from './pages/Login';
 import MoodPage from './pages/MoodPage';
 import { Home } from './pages/Home';
+import { Profile } from './pages/Profile';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './contexts/AuthContext';
+import { DataProvider, DataContext } from './contexts/DataContext';
 import './App.css';
 
 
@@ -18,15 +20,14 @@ function AppRouter() {
               <Route path="*" element={<Navigate to="/login" />} />
             </>
           )}
-        </Routes>
-
-        <Routes>
-        {signedIn && (
-          <>
-            <Route path="/" element={<Home />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </>
-        )}
+          {signedIn && (
+            <>
+              <Route path="/" element={<Home />} />
+              <Route path="/mood" element={<MoodPage />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </>
+          )}
         </Routes>
       </BrowserRouter>
   );
@@ -34,9 +35,12 @@ function AppRouter() {
 function App() {
   return (
     <AuthProvider>
-      <AppRouter />
+      <DataProvider>
+        <AppRouter />
+      </DataProvider>
     </AuthProvider>
   );
 }
 
 export default App;
+

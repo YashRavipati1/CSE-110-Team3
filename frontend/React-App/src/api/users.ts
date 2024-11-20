@@ -5,7 +5,7 @@ export type User = {
     age: number,
     height: number,
     weight: number,
-    goals: [],
+    weightGoal: number,
     nutritionRecords: [],
     exerciseRecords: []
 }
@@ -45,7 +45,7 @@ export const createUser = async (userReq: createUserRequest) => {
         age: 0,
         height: 0,
         weight: 0,
-        goals: [],
+        weightGoal: 0,
         nutritionRecords: [],
         exerciseRecords: []
     }
@@ -60,4 +60,18 @@ export const createUser = async (userReq: createUserRequest) => {
         return { success: false, data: await response.text() };
     }
     return { success: true, data: await response.json() };
-}
+};
+
+export const editUser = async (email: string, updates: any) => {
+    const response = await fetch(`http://localhost:8080/users/${email}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updates),
+    });
+    if(!response.ok) {
+        return { success: false, data: await response.text() };
+    }
+    return { success: true, data: await response.json() }
+};

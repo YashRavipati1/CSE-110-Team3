@@ -39,8 +39,8 @@ router.delete("/:id", async (req, res) => {
     res.send(result).status(200);
 });
 
-router.patch("/:id", async (req, res) => {
-    const query = { _id: ObjectId(req.params.id) };
+router.patch("/:email", async (req, res) => {
+    const query = { email: req.params.email };
     const updates = { $set: req.body };
 
     let collection = await db.collection("users");

@@ -27,7 +27,7 @@ export function DataProvider({ children }: ProviderProps) {
         const response = await getUser(auth.currentUser.email ?? "");
         if (response.success) {
             const data = await response.data;
-            setUser(data);
+            setUser(data.user);
         }
     }
   }, [auth]);
