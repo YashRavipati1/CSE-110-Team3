@@ -28,7 +28,6 @@ const LogoutButton = styled.button`
     vertical-align: middle;
     white-space: nowrap;
     position: absolute;
-    top: 30px;
     right: 30px;
     background-color: #2ea44f;
     color: white;

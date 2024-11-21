@@ -8,6 +8,7 @@ export type nutritionRecord = {
     user: string
 };
 
+// Gets the nutrition records for a user on a specific date
 export const getNutritionForUser = async (email: string, date: Date) => {
     const response = await fetch(`http://localhost:8080/nutrition/${email}/${date.toISOString().split('T')[0]}`, {
         method: 'GET',

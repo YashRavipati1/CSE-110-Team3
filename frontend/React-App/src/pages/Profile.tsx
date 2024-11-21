@@ -5,6 +5,7 @@ import { DataContext } from '../contexts/DataContext';
 import { NavButton } from '../components/navButton';
 import { editUser } from '../api/users';
 import { SubmitButton } from '../components/submitButton';
+import { HeaderRow } from './Home';
 
 const ProfileContainer = styled.div`
     display: flex;
@@ -32,18 +33,11 @@ const EntryTitle = styled.h1`
     margin-bottom: 10px;
 `;
 
-const HomeButtonContainer = styled.div`
-    position: absolute;
-    top: 30px;
-    left: 30px;
-`;
-
 const NameTitle = styled.h1`
     font-size: 50px;
     margin-bottom: 10px;
     text-align: center;
     position: absolute;
-    top: 30px;
     left: 50%;
     transform: translateX(-50%);
 `;
@@ -54,6 +48,7 @@ type EntryItemProps = {
     changeFunction: (value: any) => void;
 }
 
+//Item for each entry in profile page
 const EntryItem = (props: EntryItemProps) => {
     return (
         <EntryItemDiv>
@@ -89,11 +84,11 @@ export const Profile = () => {
     return (
 
             <ProfileContainer>
-                <NameTitle>{firstName} {lastName}</NameTitle>
-                <Logout />
-                <HomeButtonContainer>
+                <HeaderRow>
                     <NavButton route="/" text="Home"></NavButton>
-                </HomeButtonContainer>
+                    <NameTitle>{firstName} {lastName}</NameTitle>
+                    <Logout />
+                </HeaderRow>
                 <EntryItem title="Weight Goal" value={weightGoal} changeFunction={(value) => setWeightGoal(value)} />
                 <SubmitButton onClick={() => handleSubmit(currentUser?.email ?? "", weightGoal)} text="Save" style={{ marginTop: "20px" }}></SubmitButton>
             </ProfileContainer>

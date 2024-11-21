@@ -18,6 +18,7 @@ export const DataContext = React.createContext<contextType>({
   refetchData: () => null,
 });
 
+// Current user in data context contains MongoDB entry of the logged in user
 export function DataProvider({ children }: ProviderProps) {
   const [currentUser, setUser] = useState<User | null>(null);
   const auth = useContext(AuthContext);

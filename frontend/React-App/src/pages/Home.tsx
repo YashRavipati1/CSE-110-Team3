@@ -1,11 +1,22 @@
 import styled from "styled-components";
 import { MacroTracker } from "../components/macroTrackers";
-import { AuthContext, AuthProvider } from "../contexts/AuthContext";
+import { DataContext } from "../contexts/DataContext";
 import React, { useContext } from "react";
 import { getNutritionForUser } from "../api/nutrition";
 import { NavButton } from "../components/navButton";
 import { Logout } from "../components/LogoutButton";
 import { Link } from "react-router-dom";
+
+export const HeaderRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 20px;
+    position: absolute;
+    top: 30px;
+`;
 
 const HomeContainer = styled.div`
     display: flex;
@@ -47,15 +58,14 @@ const ProfileButton = styled(Link)`
     background-size: contain;
     background-color: transparent;
     position: absolute;
-    top: 20px;
-    left: 20px;
+    left: 30px;
     cursor: pointer;
     border: none;
     outline: none;
 `;
 
 export const Home = () => {
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser } = useContext(DataContext);
     const [nutritionData, setNutritionData] = React.useState({ calories: 0, protein: 0, fats: 0, carbohydrates: 0 });
 
     React.useEffect(() => {
@@ -80,26 +90,26 @@ export const Home = () => {
     }, [currentUser]);
 
     return (
-        <AuthProvider>
-            <HomeContainer>
-                <MacroContainer>
-                    <MacroTitle>MacroNutrients</MacroTitle>
-                    <MacroTracker type="Calories" amount={nutritionData.calories} goal={2000}/>
-                    <MacroTracker type="Protein" amount={nutritionData.protein} goal={150}/>
-                    <MacroTracker type="Fats" amount={nutritionData.fats} goal={100}/>
-                    <MacroTracker type="Carbohydrates" amount={nutritionData.carbohydrates} goal={300}/>
-                </MacroContainer>
-                <Logout />
-                <ProfileButton to={"/profile"}>
-                    <img src={"profile.svg"} alt="Profile" />
-                </ProfileButton>
-                <NavRow>
-                    <NavButton text="Food   +" route="/nutrition" />
-                    <NavButton text="Mood   +" route="/mood" />
-                    <NavButton text="Exercise   +" route="/exercise" />
-                </NavRow>
-            </HomeContainer>
-        </AuthProvider>
+        <HomeContainer>
+            <MacroContainer>
+                <MacroTitle>MacroNutrients</MacroTitle>
+                <MacroTracker type="Calories" amount={nutritionData.calories} goal={currentUser?.caloriesGoal ?? 0}/>
+                <MacroTracker type="Protein" amount={nutritionData.protein} goal={currentUser?.proteinGoal ?? 0}/>
+                <MacroTracker type="Fats" amount={nutritionData.fats} goal={currentUser?.fatGoal ?? 0}/>
+                <MacroTracker type="Carbohydrates" amount={nutritionData.carbohydrates} goal={currentUser?.carbGoal ?? 0}/>
+            </MacroContainer>
+            <HeaderRow>
+            <Logout />
+            <ProfileButton to={"/profile"}>
+                <img src={"profile.svg"} alt="Profile" />
+            </ProfileButton>
+            </HeaderRow>
+            <NavRow>
+                <NavButton text="Nutrition   +" route="/nutrition" />
+                <NavButton text="Mood   +" route="/mood" />
+                <NavButton text="Exercise   +" route="/exercise" />
+            </NavRow>
+        </HomeContainer>
     );
 };
 
