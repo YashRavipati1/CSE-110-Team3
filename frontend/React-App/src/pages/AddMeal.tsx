@@ -17,7 +17,7 @@ const AddMealPage = () => {
         
         // Example API call to save the meal data
         try {
-            const response = await fetch('/api/meals', {
+            const response = await fetch('http://localhost:8080/add-meal', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const AddMealPage = () => {
 
             if (response.ok) {
                 console.log('Meal added successfully!');
-                // Optionally reset the form or handle further actions
+                
             } else {
                 console.error('Failed to add meal');
             }

@@ -3,17 +3,22 @@ import Button from '../components/Button';
 import '../css_styling_files/mealCard.css';
 // Import Meal interface in future
 interface Meal {
-    id: number;
+    id: string;
     name: string;
     type: string;
     calories: number;
-    macros: string[];
+    protein: number;
+    fats: number;
+    carbs: number;
+    date: string;
+    user: string;
 }
 
+// functions expect meal ids to reference the meal to be edited/ deleted
 interface MealCardProps {
     meal: Meal;
-    onEdit: () => void;
-    onDelete: () => void;
+    onEdit: (id: string) => void;
+    onDelete: (id: string) => void;
 }
 
 const MealCard: React.FC<MealCardProps> = ({ meal, onEdit, onDelete }) => {
@@ -23,11 +28,11 @@ const MealCard: React.FC<MealCardProps> = ({ meal, onEdit, onDelete }) => {
                 <h3>{meal.name}</h3>
                 <p>Type: {meal.type}</p>
                 <p>Calories: {meal.calories}</p>
-                <p>Macros: {meal.macros.join(', ')}</p>
+                <span>Protein: {meal.protein} Carbs: {meal.carbs} Fats: {meal.fats}</span>
             </div>
             <div className="meal-actions">
-                <Button icon="edit" text="Edit Meal" size = "medium" color = "#298e46" onClick={onEdit}/>
-                <Button icon="delete" text="" size = "medium" color = "#298e46" onClick={onDelete} className="delete-button" />
+                <Button icon="edit" text="Edit Meal" size = "medium" color = "#298e46" onClick = {()=> onEdit(meal.id)}/>
+                <Button icon="delete" text="" size = "medium" color = "#298e46"onClick = {()=> onDelete(meal.id)}className="delete-button" />
             </div>
         </div>
     );
