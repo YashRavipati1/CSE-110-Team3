@@ -13,6 +13,7 @@ export type moodEntry = {
     evaluatedMood : string
 }
 
+// Creates mood entry based on responses in mood form
 export const createMoodEntry = async (answers: moodAnswers) => {
     const entry = {
         happiness: answers.happiness,

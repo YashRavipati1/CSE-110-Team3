@@ -1,7 +1,10 @@
+import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+import { AuthContext, AuthProvider } from "../contexts/AuthContext";
 
-const Button = styled(Link)`
+const LogoutButton = styled.button`
     appearance: none;
     background-color: #2ea44f;
     border: 1px solid rgba(27, 31, 35, .15);
@@ -24,18 +27,24 @@ const Button = styled(Link)`
     touch-action: manipulation;
     vertical-align: middle;
     white-space: nowrap;
-`
+    position: absolute;
+    right: 30px;
+    background-color: #2ea44f;
+    color: white;
+`;
 
+const logout = () => {
+    signOut(auth).then(() => {
+        console.log("User signed out");
+    })
+};
 
-export type NavButtonProps = {
-    text: string;
-    route: string;
-}
-
-export const NavButton = (props: NavButtonProps) => {
+export const Logout = () => {
     return (
-        <Button to={props.route}>
-            {props.text}
-        </Button>
-    )
-}
+        <AuthProvider>
+            <LogoutButton onClick={logout}>
+                Logout
+            </LogoutButton>
+        </AuthProvider>
+    );
+};

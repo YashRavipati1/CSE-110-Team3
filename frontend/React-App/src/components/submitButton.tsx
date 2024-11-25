@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
-const Button = styled(Link)`
+const Button = styled.button`
     appearance: none;
     background-color: #2ea44f;
     border: 1px solid rgba(27, 31, 35, .15);
@@ -26,15 +25,15 @@ const Button = styled(Link)`
     white-space: nowrap;
 `
 
-
-export type NavButtonProps = {
+export type SubmitButtonProps = {
+    onClick: () => any;
     text: string;
-    route: string;
-}
+    style: React.CSSProperties;
+};
 
-export const NavButton = (props: NavButtonProps) => {
+export const SubmitButton = (props: SubmitButtonProps) => {
     return (
-        <Button to={props.route}>
+        <Button onClick={props.onClick} style={props.style}>
             {props.text}
         </Button>
     )
