@@ -14,7 +14,7 @@ const MoodPage: React.FC = () => {
     };
 
     const handleBack = () => {
-        console.log("Back button clicked");
+        window.history.back();
     }
 
     function MoodValueBox({ headerText, value, onChange }: { headerText: string, value: number, onChange: (value: number) => void }) { // Accept headerText, value, and onChange as props

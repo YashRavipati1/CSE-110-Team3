@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Home } from "./pages/Home";
 import { BrowserRouter } from "react-router-dom";
-import { AuthContext, AuthProvider } from "./contexts/AuthContext";
-import { signInWithEmail } from "./firebase";
+import { DataContext, DataProvider } from "./contexts/DataContext";
 
 test('Correct Macro Amounts', async () => {
-
+    // Mock current date to same date everytime
     const date = new Date('2024-11-18T00:00:00.000Z');
     jest.useFakeTimers();
     jest.setSystemTime(date);
 
+
+    // Mock fetch response for nutrient info
     global.fetch = jest.fn().mockResolvedValue({
         ok: true,
         text: jest.fn().mockResolvedValue(JSON.stringify([
@@ -37,23 +38,34 @@ test('Correct Macro Amounts', async () => {
         ]),
       });
 
-    const mockAuthContext = {
-        currentUser: { email: process.env.TEST_USER || '' },
-        signedIn: true,
+    const mockDataContext = {
+        currentUser: {
+            email: process.env.TEST_USER || '',
+            caloriesGoal: 2200,
+            proteinGoal: 150,
+            fatGoal: 75,
+            carbGoal: 150,
+            weightGoal: 0,
+            firstName: "Dummy",
+            lastName: "Account",
+        },
+        refetchData: jest.fn(),
     };
 
+
+    // mocks data context with mock data for user
     jest.spyOn(React, 'useContext').mockImplementation((context) => {
-    if (context === AuthContext) {
-        return mockAuthContext;
+    if (context === DataContext) {
+        return mockDataContext;
     }
         return useContext(context);
     });
 
     render(
       <BrowserRouter>
-        <AuthProvider>
+        <DataProvider>
           <Home />
-        </AuthProvider>
+        </DataProvider>
       </BrowserRouter>
     );
 
@@ -70,20 +82,4 @@ test('Correct Macro Amounts', async () => {
 
     jest.useRealTimers();
 });
-
-// test('Logout', async () => {
-//     signInWithEmail(process.env.TEST_USER || '', process.env.TEST_PASS || '');
-
-//     render(<BrowserRouter>
-//         <AuthProvider>
-//             <Home />
-//         </AuthProvider>
-//     </BrowserRouter>);
-
-//     const logoutButton = screen.getByRole('button', { name: 'Logout' });
-//     expect(logoutButton).toBeInTheDocument();
-//     fireEvent.click(logoutButton);
-    
-//     await waitFor(() => expect(window.location.pathname).toBe('/login'));
-// });
 

@@ -1,8 +1,15 @@
-// interfaces for the nutrition data 
 import { NutritionRecord } from '../types/types';
 
+export type nutritionRecord = {
+    date: string,
+    calories: number,
+    protein: number,
+    fats: number,
+    carbohydrates: number,
+    name: string,
+    user: string
+};
 
-// Zere: Gets the nutrition data for a specific user on a specific date
 export const getNutritionForUser = async (email: string, date: Date) => {
     const response = await fetch(`http://localhost:8080/nutrition/${email}/${date.toISOString().split('T')[0]}`, {
         method: 'GET',

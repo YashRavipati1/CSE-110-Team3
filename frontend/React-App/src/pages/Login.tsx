@@ -42,7 +42,7 @@ export function Login() {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', rowGap: '15em' }}>
-            <h1 style={{ fontSize: '10em', color: 'green'}}>FitFuel</h1>
+            <h1 style={{ fontSize: '10em', color: '#2ea44f'}}>FitFuel</h1>
             <Button variant="primary" onClick={login} disabled={popupOpen}>Sign in with Google</Button>
         </div>
     );

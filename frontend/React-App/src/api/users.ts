@@ -5,7 +5,11 @@ export type User = {
     age: number,
     height: number,
     weight: number,
-    goals: [],
+    weightGoal: number,
+    caloriesGoal: number,
+    proteinGoal: number,
+    fatGoal: number,
+    carbGoal: number,
     nutritionRecords: [],
     exerciseRecords: []
 }
@@ -16,6 +20,7 @@ export type createUserRequest = {
     lastName: string
 }
 
+// Gets the user from DB (used in Data Context)
 export const getUser = async (email: string) => {
     const response = await fetch(`http://localhost:8080/users/${email}`, {
         method: 'GET',
@@ -29,6 +34,7 @@ export const getUser = async (email: string) => {
     return { success: true, data: await response.json() };
 }
 
+//creates a new user (used with sign in)
 export const createUser = async (userReq: createUserRequest) => {
     const getResponse = (await getUser(userReq.email));
     const user = getResponse.data.user;
@@ -45,7 +51,11 @@ export const createUser = async (userReq: createUserRequest) => {
         age: 0,
         height: 0,
         weight: 0,
-        goals: [],
+        weightGoal: 0,
+        caloriesGoal: 2200,
+        proteinGoal: 150,
+        fatGoal: 75,
+        carbGoal: 300,
         nutritionRecords: [],
         exerciseRecords: []
     }
@@ -60,4 +70,19 @@ export const createUser = async (userReq: createUserRequest) => {
         return { success: false, data: await response.text() };
     }
     return { success: true, data: await response.json() };
-}
+};
+
+// Edits a user (e.g weight goal)
+export const editUser = async (email: string, updates: any) => {
+    const response = await fetch(`http://localhost:8080/users/${email}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updates),
+    });
+    if(!response.ok) {
+        return { success: false, data: await response.text() };
+    }
+    return { success: true, data: await response.json() }
+};
