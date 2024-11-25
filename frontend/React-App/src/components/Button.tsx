@@ -18,7 +18,7 @@ interface ButtonProps {
   text: string;
   size: 'small' | 'medium' | 'large';
   color?: string;
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
 }
 

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Button from '../components/Button';
 import '../css_styling_files/addMeal.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { addNutritionRecord } from '../api/nutrition';
+import { NutritionRecord } from '../types/types';
 
 const AddMealPage = () => {
     const [mealName, setMealName] = useState('');
@@ -10,38 +12,41 @@ const AddMealPage = () => {
     const [protein, setProtein] = useState('');
     const [fats, setFats] = useState('');
     const [carbs, setCarbs] = useState('');
+    const navigate = useNavigate(); 
 
-    const handleSubmit = async (event: { preventDefault: () => void; }) => {
+    //yravipati@ucsd.edu
+    // Function to handle form submission after the user has typed in their meal information
+    // This function will be called when the user clicks the "Save Meal" button
+    // It will send the meal data to the API to be saved in the database
+    // If the meal is saved successfully, the user will be navigated to the meals page
+    // If there is an error, it will be logged to the console
+    // The meal data is sent as a JSON object to the API
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const mealData = { mealName, mealType, calories, protein, fats, carbs };
-        
-        // Example API call to save the meal data
+        const newMeal: NutritionRecord = {
+            name: mealName, 
+            user: 'yravipati@ucsd.edu', // Replace with user automatically in the future, this is a placeholder
+            date: new Date().toISOString().slice(0, 10),
+            calories: Number(calories),
+            carbohydrates: Number(carbs), 
+            fats: Number(fats),
+            protein: Number(protein)
+        };
+    
         try {
-            const response = await fetch('http://localhost:8080/add-meal', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(mealData)
-            });
-
-            if (response.ok) {
-                console.log('Meal added successfully!');
-                
+            const response = await addNutritionRecord(newMeal);
+            console.log("Data to be sent:", newMeal); 
+            if (response.acknowledged) {
+                console.log('Meal added successfully!', response.insertedId);
+                navigate('/meals'); 
             } else {
-                console.error('Failed to add meal');
+                console.log('Response from add meal:', response);
             }
         } catch (error) {
             console.error('Error saving meal:', error);
         }
     };
-
-
-    //dummy function for now
-    const handleSave = () => {
-        console.log("Add button clicked");
-    };
-
+    
     return (
         <form onSubmit={handleSubmit}>
             <h1>Add Meal</h1>
@@ -50,9 +55,9 @@ const AddMealPage = () => {
                 <input type="text" value={mealName} onChange={e => setMealName(e.target.value)} required />
             </div>
             <div>
-            <label>Meal Type:</label>
+                <label>Meal Type:</label>
                 <select value={mealType} onChange={e => setMealType(e.target.value)} required>
-                    <option value="" disabled selected>Select a meal type</option>
+                    <option value="" disabled>Select a meal type</option>
                     <option value="Breakfast">Breakfast</option>
                     <option value="Lunch">Lunch</option>
                     <option value="Dinner">Dinner</option>
@@ -76,11 +81,12 @@ const AddMealPage = () => {
                 <label>Carbs:</label>
                 <input type="number" value={carbs} onChange={e => setCarbs(e.target.value)} required />
             </div>
-            <Link to="/meal-list">
-            <Button text="Back" size = "large" color = "#298e46" onClick={handleSave}/>
-           </Link>
-            <Button text="Save Meal" size = "large" color = "#298e46" onClick={handleSave}/>
-                   
+            <div>
+                <Link to="/meals">
+                    <Button text="Back" size="large" color="#298e46" />
+                </Link>
+                <Button text="Save Meal" size="large" color="#298e46"  />
+            </div>
         </form>
     );
 };

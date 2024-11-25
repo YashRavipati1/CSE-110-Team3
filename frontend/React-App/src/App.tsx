@@ -9,6 +9,7 @@ import './App.css';
 
 import MealPage from './pages/MealPage';
 import AddMealPage from './pages/AddMeal';
+import EditMeal from './pages/EditMeal';
 
 function App() {
   const { signedIn } = useContext(AuthContext);
@@ -19,8 +20,9 @@ function App() {
           <>
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<Navigate to="/login" />} />
-            <Route path="/meal-list" element={<MealPage />} />
+            <Route path="/meals" element={<MealPage />} />
             <Route path="/add-meal" element={<AddMealPage />} />
+            <Route path="/edit-meal/:id" element={<EditMeal />} />
           </>
         )}
       </Routes>

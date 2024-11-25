@@ -1,5 +1,119 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../components/Button';
 import '../css_styling_files/addMeal.css';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { getNutritionRecordById, updateNutritionRecord } from '../api/nutrition';
+import { NutritionRecord } from '../types/types';
+
+const EditMealPage = () => {
+
+    // Initialize state variables for the form fields
+    const [mealName, setMealName] = useState('');
+    const [mealType, setMealType] = useState('');
+    const [calories, setCalories] = useState('');
+    const [protein, setProtein] = useState('');
+    const [fats, setFats] = useState('');
+    const [carbs, setCarbs] = useState('');
+    const navigate = useNavigate();
+
+    const { id } = useParams();  // This will get the id from the URL
+
+    // Fetch the existing meal data when the page loads, using the api
+    // This will populate the form fields with the existing meal data
+    // 
+    useEffect(() => {
+        
+        const fetchMealData = async () => {
+            const response = await getNutritionRecordById(id!, 'yravipati@ucsd.edu');
+            console.log("Response from getting meal: ", response); // The id! means is guaranteed to be present, might need to change later to catch errors with id passing
+            if (response.success) {
+                const mealData = response.data[0]; // Access the first element of the array that we're getting from the API
+                setMealName(mealData.name);
+                setMealType(mealData.type || ''); //type is optional bc its not in the schema yet
+                setCalories(mealData.calories);
+                setProtein(mealData.protein);
+                setFats(mealData.fats);
+                setCarbs(mealData.carbohydrates);
+            } else {
+                console.error('Failed to fetch meal details:', response.data);
+            }
+        };
+
+        fetchMealData();
+    }, [id]);
+
+    // Function to handle form submission after the user has typed in their meal information
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const updatedMeal = {
+            name: mealName,
+            type: mealType,
+            calories: Number(calories),
+            protein: Number(protein),
+            fats: Number(fats),
+            carbohydrates: Number(carbs),
+            user: 'yravipati@ucsd.edu', // Replace with actual user from context or auth in future
+            date: new Date().toISOString().slice(0, 10)
+        };
+
+        try {
+            const response = await updateNutritionRecord(id!, updatedMeal);
+            if (response.success) {
+                console.log('Meal updated successfully!');
+                navigate('/meals');
+            } else {
+                console.error('Failed to update meal:', response.data);
+            }
+        } catch (error) {
+            console.error('Error updating meal:', error);
+        }
+    };
+
+    // returning the forms, using the same UI as add page
+    return (
+        <form onSubmit={handleSubmit}>
+            <h1>Edit Meal</h1>
+            <div>
+                <label>Meal Name:</label>
+                <input type="text" value={mealName} onChange={e => setMealName(e.target.value)} required />
+            </div>
+            <div>
+                <label>Meal Type:</label>
+                <select value={mealType} onChange={e => setMealType(e.target.value)} required>
+                    <option value="" disabled>Select a meal type</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Snack">Snack</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div>
+                <label>Calories:</label>
+                <input type="number" value={calories} onChange={e => setCalories(e.target.value)} required />
+            </div>
+            <div>
+                <label>Protein:</label>
+                <input type="number" value={protein} onChange={e => setProtein(e.target.value)} required />
+            </div>
+            <div>
+                <label>Fats:</label>
+                <input type="number" value={fats} onChange={e => setFats(e.target.value)} required />
+            </div>
+            <div>
+                <label>Carbs:</label>
+                <input type="number" value={carbs} onChange={e=> setCarbs(e.target.value)} required />
+            </div>
+            <div>
+                <Link to="/meals">
+                    <Button text="Back" size="large" color="#298e46" />
+                </Link>
+                <Button text="Save Meal" size="large" color="#298e46" />
+                
+            </div>
+        </form>
+    );
+};
+
+export default EditMealPage;
 
