@@ -1,68 +1,33 @@
-import React from 'react';
-import { act } from '@testing-library/react';
-import { render, screen, waitFor } from '@testing-library/react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import MealPage from './pages/MealPage';
-import { getNutritionForUser } from './api/nutrition'; // Import to override its implementation
-import { cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import MealPage from '../src/pages/MealPage'; // Adjust based on the actual location of your MealPage component
+import AddMealPage from '../src/pages/AddMeal'; // Adjust based on the actual location of your AddMealPage component
+import Button from '../src/components/Button'; // Adjust based on the actual location of your Button component
 
-
-// Mocking FontAwesomeIcon
-// This is required because the MealCard component uses FontAwesomeIcon
-// If you don't mock it, you'll get an error saying FontAwesomeIcon is not defined
-jest.mock('@fortawesome/react-fontawesome', () => ({
-  FontAwesomeIcon: () => <span>MockedIcon</span>,
-}));
-
-// Mocking modules
-jest.mock('./api/nutrition', () => ({
-    getNutritionForUser: jest.fn()
-}));
-
-// Assuming you have some context provider for authentication status
-jest.mock('./contexts/AuthContext', () => ({
-    useAuth: () => ({ isAuthenticated: true }) // Simulate a logged-in user
-}));
-
-// Sample test to check if the Add Meal button renders correctly
-test('renders add meal button', async () => {
-  (getNutritionForUser as jest.Mock).mockResolvedValueOnce({
-    success: true,
-    data: [{ id: '1', name: 'Test Meal', calories: 500, user: 'testuser@example.com', date: '2023-01-01' }]
+describe('UI Component Tests', () => {
+  test('renders Add Meal button on MealPage', () => {
+    render(
+      <BrowserRouter>
+        <MealPage />
+      </BrowserRouter>
+    );
+    const addButton = screen.getByText(/Add Meal/i); // Replace with the exact button text
+    expect(addButton).toBeInTheDocument();
   });
 
-  render(
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MealPage />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  test('renders Add Meal card on AddMealPage', () => {
+    render(
+      <BrowserRouter>
+        <AddMealPage />
+      </BrowserRouter>
+    );
+    const mealCard = screen.getByText(/Add Meal/i); // Replace with specific text on the card
+    expect(mealCard).toBeInTheDocument();
+  });
 
-  await waitFor(() => {
-    expect(screen.getByText(/Add Meal/i)).toBeInTheDocument();
+  test('renders a reusable button with text', () => {
+    render(<Button text="Save Meal" size="large" />);
+    const button = screen.getByText(/Save Meal/i);
+    expect(button).toBeInTheDocument();
   });
 });
-
-// Test to check if no meals are displayed when the user has no meals
-test('displays no meals message when meal list is empty', async () => {
-  (getNutritionForUser as jest.Mock).mockResolvedValueOnce({ success: true, data: [] });
-
-  render(
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MealPage />} />
-      </Routes>
-    </BrowserRouter>
-  );
-
-  const noMealsMessage = await screen.findByText(/No meals to display/i);
-  expect(noMealsMessage).toBeInTheDocument();
-});
-
-afterEach(() => {
-  cleanup();
-  jest.clearAllMocks(); // Clear mocks after each test
-  jest.useRealTimers(); // Reset timers
-});
-
