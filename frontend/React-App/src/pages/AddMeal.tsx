@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from '../components/Button';
 import '../css_styling_files/addMeal.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { addNutritionRecord } from '../api/nutrition';
 import { NutritionRecord } from '../types/types';
+import { DataContext } from "../contexts/DataContext";
 
 const AddMealPage = () => {
     const [mealName, setMealName] = useState('');
@@ -14,7 +15,12 @@ const AddMealPage = () => {
     const [carbs, setCarbs] = useState('');
     const navigate = useNavigate(); 
 
-    //yravipati@ucsd.edu
+    const userEmail = useContext(DataContext).currentUser?.email; 
+    if (!userEmail) {
+        console.error("User email is undefined");
+        return <div>Loading user data, email is undefined...</div>;  // Exit if userEmail is undefined & to prevent error & return empty div 
+    }
+
     // Function to handle form submission after the user has typed in their meal information
     // This function will be called when the user clicks the "Save Meal" button
     // It will send the meal data to the API to be saved in the database
@@ -25,7 +31,7 @@ const AddMealPage = () => {
         event.preventDefault();
         const newMeal: NutritionRecord = {
             name: mealName, 
-            user: 'yravipati@ucsd.edu', // Replace with user automatically in the future, this is a placeholder
+            user: userEmail, 
             date: new Date().toISOString().slice(0, 10),
             calories: Number(calories),
             carbohydrates: Number(carbs), 
@@ -82,9 +88,7 @@ const AddMealPage = () => {
                 <input type="number" value={carbs} onChange={e => setCarbs(e.target.value)} required />
             </div>
             <div>
-                <Link to="/meals">
-                    <Button text="Back" size="large" color="#298e46" />
-                </Link>
+                <Button text="Back" size="large" color="#298e46" route="/meals"/>
                 <Button text="Save Meal" size="large" color="#298e46"  />
             </div>
         </form>

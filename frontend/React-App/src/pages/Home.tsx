@@ -6,6 +6,7 @@ import { getNutritionForUser } from "../api/nutrition";
 import { NavButton } from "../components/navButton";
 import { Logout } from "../components/LogoutButton";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 export const HeaderRow = styled.div`
     display: flex;
@@ -105,7 +106,8 @@ export const Home = () => {
             </ProfileButton>
             </HeaderRow>
             <NavRow>
-                <NavButton text="Nutrition   +" route="/nutrition" />
+                {/*Zere: Added route to /meals instead of /nutrition */}
+                <NavButton text="Nutrition   +" route="/meals" />
                 <NavButton text="Mood   +" route="/mood" />
                 <NavButton text="Exercise   +" route="/exercise" />
             </NavRow>
