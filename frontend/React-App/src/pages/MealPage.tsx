@@ -1,17 +1,20 @@
 // src/pages/MealPage.tsx
 import React, { useEffect, useState, useContext } from 'react';
-import { Meal } from '../types/types';
+//import { Meal } from '../types/types';
 import MealCard from '../components/MealCard';
 import { deleteNutritionRecord, getNutritionForUser, getAllNutritionForUser } from '../api/nutrition';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import { DataContext } from "../contexts/DataContext";
+import { NutritionEntry } from '../types/types';
+
+// Meal interface has a meal type
 
 
 const MealPage: React.FC = () => {
     const navigate = useNavigate(); // Use the navigate hook to navigate to the edit page
     const { currentUser } = useContext(DataContext);
-    const [meals, setMeals] = useState<Meal[]>([]);
+    const [meals, setMeals] = useState<NutritionEntry[]>([]);
 
     // Fetch meals for the user when the page loads
     useEffect(() => {
@@ -28,9 +31,9 @@ const MealPage: React.FC = () => {
     
             if (response.success) {
                 console.log("Meals loaded:", response.data); // Log to see the actual meals data
-                setMeals(response.data.map((meal: Meal) => ({
+                setMeals(response.data.map((meal: NutritionEntry) => ({
                     ...meal,
-                    id: meal._id  // Ensure that `_id` from MongoDB is mapped to `id` expected by frontend
+                    id: meal._id  // making sure that `_id` from MongoDB is mapped to `id` expected by frontend
                 })));
             } else {
                 console.error("Failed to fetch meals:", response.data); // Error logging if fetch failed
@@ -70,6 +73,7 @@ const MealPage: React.FC = () => {
         navigate(`/edit-meal/${id}`);
     };
 
+    
     return (
         <div>
             <h1>Meal List</h1>

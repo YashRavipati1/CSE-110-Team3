@@ -1,14 +1,5 @@
-import { NutritionRecord } from '../types/types';
+import { NutritionEntry, NewOrEditedNutritionEntry } from '../types/types';
 
-export type nutritionRecord = {
-    date: string,
-    calories: number,
-    protein: number,
-    fats: number,
-    carbohydrates: number,
-    name: string,
-    user: string
-};
 
 export const getNutritionForUser = async (email: string, date: Date) => {
     const response = await fetch(`http://localhost:8080/nutrition/${email}/${date.toISOString().split('T')[0]}`, {
@@ -89,7 +80,7 @@ export const getNutritionRecordById = async (id: string, email: string): Promise
 }
 
 // Zere: adding a new function to add a nutrition record, for the add meal functionality
-export const addNutritionRecord = async (mealData: NutritionRecord): Promise<any> => {
+export const addNutritionRecord = async (mealData: NewOrEditedNutritionEntry): Promise<any> => {
     const response = await fetch(`http://localhost:8080/nutrition`, {
         method: 'POST',
         headers: {
@@ -101,8 +92,8 @@ export const addNutritionRecord = async (mealData: NutritionRecord): Promise<any
 };
 
 // Zere: adding a new function to update a nutrition record, for edit meal functionality
-export const updateNutritionRecord = async (id: string, record: NutritionRecord): Promise<any> => {
-    const response = await fetch(`http://localhost:8080/nutrition/${id}`, {
+export const updateNutritionRecord = async (email: string, id: string, record: NewOrEditedNutritionEntry): Promise<any> => {
+    const response = await fetch(`http://localhost:8080/nutrition/${email}/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

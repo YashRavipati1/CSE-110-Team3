@@ -3,7 +3,7 @@ import Button from '../components/Button';
 import '../css_styling_files/addMeal.css';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getNutritionRecordById, updateNutritionRecord } from '../api/nutrition';
-import { NutritionRecord } from '../types/types';
+import { NutritionEntry, NewOrEditedNutritionEntry } from '../types/types';
 import { DataContext } from "../contexts/DataContext";
 
 const EditMealPage = () => {
@@ -55,20 +55,30 @@ const EditMealPage = () => {
             console.error("User email is undefined");
             return <div>Loading user data, email is undefined...</div>;  // Exit if userEmail is undefined & to prevent error & return empty div 
         }
+        if (!id) {
+            console.error("Meal ID is undefined");
+            return <div>Loading user data, email is undefined...</div>;  // Exit if userEmail is undefined & to prevent error & return empty div 
+        }
         event.preventDefault();
-        const updatedMeal = {
+        const updatedMeal: NewOrEditedNutritionEntry = {
+           // _id: id,
             name: mealName,
+            user: userEmail,
             type: mealType,
+            date: new Date().toISOString().slice(0, 10),
             calories: Number(calories),
-            protein: Number(protein),
-            fats: Number(fats),
             carbohydrates: Number(carbs),
-            user: userEmail, // Replace with actual user from context or auth in future
-            date: new Date().toISOString().slice(0, 10)
+            fats: Number(fats),
+            protein: Number(protein)
         };
 
+        console.log("Data being sent to update from edit meal:", updatedMeal);
+        console.log("User email from edit meal:", userEmail);
+        console.log("Meal ID from edit meal:", id);
+
         try {
-            const response = await updateNutritionRecord(id!, updatedMeal);
+            const response = await updateNutritionRecord(userEmail, id!, updatedMeal);
+            
             if (response.acknowledged) {
                 console.log('Meal updated successfully!');
                 navigate('/meals');

@@ -41,12 +41,13 @@ const MealCard: React.FC<MealCardProps> = ({ meal, onEdit, onDelete }) => {
 export default MealCard;*/
 // src/components/MealCard.tsx
 import React from 'react';
-import { Meal } from '../types/types'; // Importing the Meal interface
+//import { Meal } from '../types/types'; // Importing the Meal interface
 import Button from './Button';
 import '../css_styling_files/mealCard.css';
+import { NutritionEntry } from '../types/types';
 
 interface MealCardProps {
-    meal: Meal;
+    meal: NutritionEntry;
     onEdit: (id: string) => void;
     onDelete: (id: string) => void;
 }

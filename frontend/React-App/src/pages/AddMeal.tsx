@@ -3,7 +3,7 @@ import Button from '../components/Button';
 import '../css_styling_files/addMeal.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { addNutritionRecord } from '../api/nutrition';
-import { NutritionRecord } from '../types/types';
+import { NutritionEntry, NewOrEditedNutritionEntry } from '../types/types';
 import { DataContext } from "../contexts/DataContext";
 
 const AddMealPage = () => {
@@ -29,9 +29,10 @@ const AddMealPage = () => {
     // The meal data is sent as a JSON object to the API
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const newMeal: NutritionRecord = {
+        const newMeal: NewOrEditedNutritionEntry = {
             name: mealName, 
             user: userEmail, 
+            type: mealType,
             date: new Date().toISOString().slice(0, 10),
             calories: Number(calories),
             carbohydrates: Number(carbs), 
