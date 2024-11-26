@@ -61,7 +61,6 @@ const EditMealPage = () => {
         }
         event.preventDefault();
         const updatedMeal: NewOrEditedNutritionEntry = {
-           // _id: id,
             name: mealName,
             user: userEmail,
             type: mealType,
@@ -72,9 +71,9 @@ const EditMealPage = () => {
             protein: Number(protein)
         };
 
-        console.log("Data being sent to update from edit meal:", updatedMeal);
+       /* console.log("Data being sent to update from edit meal:", updatedMeal);
         console.log("User email from edit meal:", userEmail);
-        console.log("Meal ID from edit meal:", id);
+        console.log("Meal ID from edit meal:", id);*/
 
         try {
             const response = await updateNutritionRecord(userEmail, id!, updatedMeal);
