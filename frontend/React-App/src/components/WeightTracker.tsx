@@ -58,50 +58,47 @@ const data = [
   },
 ];
 
-//Update to nonclass version
-export default class WeightTracker extends PureComponent {
-  render() {
-      const goal = 160;
-      //Creates a buffer from the Min and Max Y axis
-      const maxY = Math.max(...data.map(item => item.Weight), goal) + 5;
-      const minY = Math.min(...data.map(item => item.Weight), goal) - 5;
+export const WeightTracker = () => {
+  const goal = 160;
+  //Creates a buffer from the Min and Max Y axis
+  const maxY = Math.max(...data.map(item => item.Weight), goal) + 5;
+  const minY = Math.min(...data.map(item => item.Weight), goal) - 5;
 
-    return (
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 20,
-            right: 50,
-            left: 20,
-            bottom: 20,
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart
+        width={500}
+        height={300}
+        data={data}
+        margin={{
+          top: 20,
+          right: 50,
+          left: 20,
+          bottom: 20,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          dataKey="name"
+          label={{ value: 'Date', position: 'insideBottom', offset: -9 }}
+        />
+        <YAxis
+          label={{ value: 'Weight', angle: -90, position: 'insideLeft' }}
+          domain={[minY, maxY]}
+        />
+        <Tooltip />
+        <Legend 
+          wrapperStyle={{
+            top: -30,
+            left: 50,
+            right: 0,
+            bottom: 0,
+            position: 'relative',
           }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="name"
-            label={{ value: 'Date', position: 'insideBottom', offset: -9 }}
-          />
-          <YAxis
-            label={{ value: 'Weight', angle: -90, position: 'insideLeft' }}
-            domain={[minY, maxY]}
-          />
-          <Tooltip />
-          <Legend 
-            wrapperStyle={{
-              top: -30,
-              left: 50,
-              right: 0,
-              bottom: 0,
-              position: 'relative',
-            }}
-          />
-          <ReferenceLine y={goal} label={{value: 'Goal', position: 'insideTop'}} stroke="blue" />
-          <Line type="monotone" dataKey="Weight" stroke="green" />
-        </LineChart>
-      </ResponsiveContainer>
-    );
-  }
+        />
+        <ReferenceLine y={goal} label={{value: 'Goal', position: 'insideTop'}} stroke="blue" />
+        <Line type="monotone" dataKey="Weight" stroke="green" />
+      </LineChart>
+    </ResponsiveContainer>
+  );
 }
