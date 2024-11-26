@@ -38,7 +38,7 @@ const data = [
   },
   {
     name: '07/18',
-    Weight: 170,
+    Weight: 190,
   },
   {
     name: '08/18',
@@ -58,12 +58,13 @@ const data = [
   },
 ];
 
+//Update to nonclass version
 export default class WeightTracker extends PureComponent {
   render() {
       const goal = 160;
       //Creates a buffer from the Min and Max Y axis
-      const maxY = Math.max(...data.map(item => item.Weight), goal) + 10;
-      const minY = Math.min(...data.map(item => item.Weight), goal) - 10;
+      const maxY = Math.max(...data.map(item => item.Weight), goal) + 5;
+      const minY = Math.min(...data.map(item => item.Weight), goal) - 5;
 
     return (
       <ResponsiveContainer width="100%" height="100%">
