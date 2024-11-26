@@ -15,3 +15,7 @@ describe('UI Component Tests', () => {
     expect(addButton).toBeInTheDocument();
   });
 });
+afterEach(() => {
+  jest.clearAllMocks();
+  jest.useRealTimers();
+});
