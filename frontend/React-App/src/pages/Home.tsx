@@ -8,6 +8,7 @@ import { Logout } from "../components/LogoutButton";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 
+
 export const HeaderRow = styled.div`
     display: flex;
     flex-direction: row;
