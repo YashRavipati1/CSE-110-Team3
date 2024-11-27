@@ -1,3 +1,4 @@
+// Zere: changed nutrition and exercise records to any[] to avoid type errors
 export type User = {
     email: string,
     firstName: string,
@@ -10,8 +11,8 @@ export type User = {
     proteinGoal: number,
     fatGoal: number,
     carbGoal: number,
-    nutritionRecords: [],
-    exerciseRecords: []
+    nutritionRecords: any[],
+    exerciseRecords: any[]
 }
 
 export type createUserRequest = {
@@ -19,6 +20,8 @@ export type createUserRequest = {
     firstName: string,
     lastName: string
 }
+
+  
 
 // Gets the user from DB (used in Data Context)
 export const getUser = async (email: string) => {
