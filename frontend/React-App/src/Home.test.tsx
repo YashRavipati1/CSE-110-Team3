@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { Home } from "./pages/Home";
 import { BrowserRouter } from "react-router-dom";
 import { DataContext, DataProvider } from "./contexts/DataContext";
+import ResizeObserver from 'resize-observer-polyfill';
 
 test('Correct Macro Amounts', async () => {
     // Mock current date to same date everytime
@@ -10,6 +11,8 @@ test('Correct Macro Amounts', async () => {
     jest.useFakeTimers();
     jest.setSystemTime(date);
 
+    //Monitors elements for changes in size
+    global.ResizeObserver = ResizeObserver; 
 
     // Mock fetch response for nutrient info
     global.fetch = jest.fn().mockResolvedValue({
