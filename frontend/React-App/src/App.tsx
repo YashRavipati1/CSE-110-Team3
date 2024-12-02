@@ -29,10 +29,10 @@ function AppRouter() {
               <Route path="/" element={<Home />} />
               <Route path="/mood" element={<MoodPage />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="*" element={<Navigate to="/" />} />
               <Route path="/meals" element={<MealPage />} />
               <Route path="/add-meal" element={<AddMealPage />} />
               <Route path="/edit-meal/:id" element={<EditMeal />} />
+              <Route path="*" element={<Navigate to="/" />} />
             </>
           )}
         </Routes>

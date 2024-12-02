@@ -63,9 +63,10 @@ const MealCard: React.FC<MealCardProps> = ({ meal, onEdit, onDelete }) => {
                 <span>Protein: {meal.protein} Carbs: {meal.carbohydrates} Fats: {meal.fats}</span>
             </div>
             <div className="meal-actions">
-            <Button icon="edit" text="Edit Meal" size="medium" color="#298e46" onClick={() => onEdit(meal._id)} />
-            <Button icon="delete" text="" size="medium" color="#298e46" onClick={() => onDelete(meal._id)} className="delete-button" />
-
+                <div style={{ paddingBottom: '15px'}}>
+                    <Button icon="edit" text="Edit Meal" size="medium" color="#298e46" onClick={() => onEdit(meal._id)} />
+                </div>
+                <Button icon="delete" text="" size="medium" color="#298e46" onClick={() => onDelete(meal._id)} className="delete-button" />
             </div>
         </div>
     );

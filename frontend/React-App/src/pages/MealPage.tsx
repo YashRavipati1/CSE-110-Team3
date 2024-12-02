@@ -3,10 +3,43 @@ import React, { useEffect, useState, useContext } from 'react';
 //import { Meal } from '../types/types';
 import MealCard from '../components/MealCard';
 import { deleteNutritionRecord, getNutritionForUser, getAllNutritionForUser } from '../api/nutrition';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import { DataContext } from "../contexts/DataContext";
-import { NutritionEntry } from '../types/types';
+import { NutritionEntry, User, MealRec } from '../types/types';
+import { getMealRec } from '../api/mealRec';
+import { MealRecCard } from '../components/MealRecCard';
+
+async function getRecommendedMeals(currentUser: User | null) {
+    let CALORIE_GOAL = currentUser?.caloriesGoal ?? 2200
+    let PROTEIN_GOAL = currentUser?.proteinGoal ?? 150
+    let FAT_GOAL = currentUser?.fatGoal ?? 75
+    let CARB_GOAL = currentUser?.carbGoal ?? 300
+    const response = await getNutritionForUser(currentUser?.email ?? "", new Date());
+    if (response.success) {
+        const meals = response.data;
+        let calories = 0;
+        let protein = 0;
+        let fats = 0;
+        let carbohydrates = 0;
+        for (const meal of meals) {
+            calories += meal.calories;
+            protein += meal.protein;
+            fats += meal.fats;
+            carbohydrates += meal.carbohydrates;
+        }
+        const calType = (CALORIE_GOAL - calories > 500) ? "High" : "Low";
+        const pType = (PROTEIN_GOAL - protein > 50) ? "High" : "Low";
+        const fType = (FAT_GOAL - fats > 30) ? "High" : "Low";
+        const cType = (CARB_GOAL - carbohydrates > 150) ? "High" : "Low";
+        const mealRecs = await getMealRec(calType, pType, fType, cType);
+        if (!mealRecs.success) {
+            console.error("Failed to get meal recommendations");
+            return [];
+        }
+        return mealRecs.data;
+    }
+}
 
 // Meal interface has a meal type
 
@@ -15,6 +48,7 @@ const MealPage: React.FC = () => {
     const navigate = useNavigate(); // Use the navigate hook to navigate to the edit page
     const { currentUser } = useContext(DataContext);
     const [meals, setMeals] = useState<NutritionEntry[]>([]);
+    const [mealRecs, setMealRecs] = useState<MealRec[]>([]);
 
     // Fetch meals for the user when the page loads
     useEffect(() => {
@@ -24,13 +58,15 @@ const MealPage: React.FC = () => {
             console.error("User email is undefined");
             return; // Exit if userEmail is undefined
         }
+
+        getRecommendedMeals(currentUser).then(response => {
+            setMealRecs(response);
+        })
     
     
         getAllNutritionForUser(userEmail).then(response => {
-            console.log("API response:", response); // Check what the API returned
     
             if (response.success) {
-                console.log("Meals loaded:", response.data); // Log to see the actual meals data
                 setMeals(response.data.map((meal: NutritionEntry) => ({
                     ...meal,
                     id: meal._id  // making sure that `_id` from MongoDB is mapped to `id` expected by frontend
@@ -69,15 +105,33 @@ const MealPage: React.FC = () => {
     // The id is used to fetch the meal data from the database
     // The id is passed to the edit page to know which meal to edit
     const handleEdit = (id: string) => {
-        console.log("Navigate to edit page for meal:", id);
         navigate(`/edit-meal/${id}`);
     };
+
+    // When the plus button on the mealRec card is clicked, refresh the shown meals
+    const handlePlus = () => {
+        getAllNutritionForUser(currentUser?.email ?? "").then(response => {
+    
+            if (response.success) {
+                setMeals(response.data.map((meal: NutritionEntry) => ({
+                    ...meal,
+                    id: meal._id  // making sure that `_id` from MongoDB is mapped to `id` expected by frontend
+                })));
+            } else {
+                console.error("Failed to fetch meals:", response.data); // Error logging if fetch failed
+            }
+        }).catch(error => {
+            console.error("Error fetching meals:", error); // Catch any network or parsing errors
+        });
+    }
 
     
     return (
         <div>
-            <h1>Meal List</h1>
+            <div className='header' style={{paddingLeft: '20px', paddingTop: '20px'}}>
+                <h1>Meal List</h1>
                 <Button icon="add" text="Add Meal" size="large" color="#298e46" route = "/add-meal"/>
+            </div>
             {meals.length > 0 ? (
             meals.map(meal => (
                 <MealCard
@@ -90,10 +144,34 @@ const MealPage: React.FC = () => {
         ) : (
             <p>No meals to display.</p>  // Provide feedback when no meals are available
         )}
-        <Button text = "Back" size = "large" color = "#298e46" route = "/"/>
+        <h1 style={{paddingLeft: '20px'}}>Recommended Meals</h1>
+        {mealRecs.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
+                {mealRecs.map(mealRec => (
+                    <MealRecCard
+                        meal={mealRec.title}
+                        calories={mealRec.calories}
+                        protein={mealRec.protein}
+                        carbs={mealRec.carbs}
+                        fats={mealRec.fats}
+                        calType={mealRec.calType}
+                        pType={mealRec.pType}
+                        fType={mealRec.fType}
+                        cType={mealRec.cType}
+                        onPlus={handlePlus}
+                    />
+                ))}
+            </div>
+        ) : (
+            <p>No recommended meals to display.</p>
+        )}
+        <div style={{paddingLeft: '20px'}}>
+            <Button text = "Back" size = "large" color = "#298e46" route = "/"/>
+        </div>
         </div>
         
     );
 };
 
 export default MealPage;
+

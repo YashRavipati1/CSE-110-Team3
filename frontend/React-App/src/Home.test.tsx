@@ -38,16 +38,21 @@ test('Correct Macro Amounts', async () => {
         ]),
       });
 
-    const mockDataContext = {
+      const mockDataContext = {
         currentUser: {
             email: process.env.TEST_USER || '',
             caloriesGoal: 2200,
             proteinGoal: 150,
             fatGoal: 75,
-            carbGoal: 150,
-            weightGoal: 0,
+            carbGoal: 160,
+            weightGoal: 180,
             firstName: "Dummy",
             lastName: "Account",
+            age: 25,
+            height: 175,
+            weight: 70,
+            nutritionRecords: [] as [],
+            exerciseRecords: [] as [],
         },
         refetchData: jest.fn(),
     };
@@ -63,9 +68,9 @@ test('Correct Macro Amounts', async () => {
 
     render(
       <BrowserRouter>
-        <DataProvider>
+        <DataContext.Provider value={mockDataContext}>
           <Home />
-        </DataProvider>
+        </DataContext.Provider>
       </BrowserRouter>
     );
 

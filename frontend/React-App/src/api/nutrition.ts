@@ -56,11 +56,11 @@ export const getAllNutritionForUser = async (email: string)=> {
 
 // Zere: To edit meal, gets the nutrition data for a specific user and meal, using the unique email and meal id
 export const getNutritionRecordById = async (id: string, email: string): Promise<any> => {
-    const response = await fetch(`http://localhost:8080/nutrition/${email}/${id}`, {
+    const response = await fetch(`http://localhost:8080/nutrition/nutID/${email}/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-        }
+        },
     });
     if (!response.ok) {
         return { success: false, data: await response.text() };

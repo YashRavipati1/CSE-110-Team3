@@ -23,11 +23,10 @@ router.get("/:email", async (req, res) => {
 });
 
 
-router.get("/:email/:_id", async (req, res) => {
-    //console.log("User email in nutrition.mjs: " + req.params.email);
+router.get("/nutID/:email/:_id", async (req, res) => {
+    let { email, _id } = req.params;
     let collection = await db.collection("nutritionEntries");
-    let query = { user: req.params.email, _id: ObjectId(req.params._id) };
-    //console.log("User email in query: " + req.params.email);
+    let query = { user: email, _id: ObjectId(_id) };
     try {
         let results = await collection.find(query).toArray();
         if (results.length > 0) {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './rangeSlider.css';
+import '../css_styling_files/rangeSlider.css';
 
 interface RangeSliderProps {
   min: number;

@@ -1,5 +1,19 @@
 // Zere: Interface for the meal object
-
+export type User = {
+    email: string,
+    firstName: string,
+    lastName: string,
+    age: number,
+    height: number,
+    weight: number,
+    weightGoal: number,
+    caloriesGoal: number,
+    proteinGoal: number,
+    fatGoal: number,
+    carbGoal: number,
+    nutritionRecords: [],
+    exerciseRecords: []
+}
 
 export interface NutritionEntry {
     _id: string;
@@ -22,6 +36,18 @@ export interface NewOrEditedNutritionEntry {
     fats: number;
     protein: number;
     user: string;
+}
+
+export type MealRec = {
+    title: string,
+    calories: number,
+    protein: number,
+    fats: number,
+    carbs: number,
+    calType: string,
+    pType: string,
+    fType: string,
+    cType: string
 }
 
 
