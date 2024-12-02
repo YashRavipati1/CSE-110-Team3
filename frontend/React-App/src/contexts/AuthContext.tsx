@@ -17,6 +17,7 @@ export const AuthContext = React.createContext<contextType>({
   signedIn: false,
 });
 
+// Gets auth info, such as if the user is signed in and the basic user information
 export function AuthProvider({ children }: ProviderProps) {
   const [currentUser, setUser] = useState<User | null | undefined>(null);
 

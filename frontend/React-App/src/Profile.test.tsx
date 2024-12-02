@@ -32,19 +32,6 @@ test('Correct goals', async () => {
         }
         return useContext(context);
     });
-
-    global.fetch = jest.fn().mockResolvedValue({
-        ok: true,
-        json: jest.fn().mockResolvedValue(
-          {
-            email: process.env.TEST_USER || '',
-            caloriesGoal: 2200,
-            proteinGoal: 150,
-            fatGoal: 75,
-            carbGoal: 160,
-            weightGoal: 180
-          })
-    })
     global.alert = jest.fn();
 
     render(

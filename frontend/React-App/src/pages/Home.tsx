@@ -6,7 +6,6 @@ import { getNutritionForUser } from "../api/nutrition";
 import { NavButton } from "../components/navButton";
 import { Logout } from "../components/LogoutButton";
 import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
 
 export const HeaderRow = styled.div`
     display: flex;
@@ -69,6 +68,7 @@ export const Home = () => {
     const { currentUser } = useContext(DataContext);
     const [nutritionData, setNutritionData] = React.useState({ calories: 0, protein: 0, fats: 0, carbohydrates: 0 });
 
+    // Gets all nutrition info for the day and fills out progress bars
     React.useEffect(() => {
         const fetchNutrition = async () => {
             const response = await getNutritionForUser(currentUser?.email ?? "", new Date());

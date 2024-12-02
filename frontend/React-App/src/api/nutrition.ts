@@ -1,6 +1,6 @@
-import { NutritionEntry, NewOrEditedNutritionEntry } from '../types/types';
+import { NewOrEditedNutritionEntry } from '../types/types';
 
-
+// Gets all nutrition entires for a user on a specific day
 export const getNutritionForUser = async (email: string, date: Date) => {
     const response = await fetch(`http://localhost:8080/nutrition/${email}/${date.toISOString().split('T')[0]}`, {
         method: 'GET',

@@ -79,7 +79,7 @@ export interface MealRecProps {
     onPlus: () => void
 }
 
-
+// Meal recommendation card for each recommendation
 export const MealRecCard = ({ meal, calories, protein, carbs, fats, calType, pType, fType, cType, onPlus }: MealRecProps) => {
     const { currentUser } = useContext(DataContext);
     const [mealType, setMealType] = useState('');

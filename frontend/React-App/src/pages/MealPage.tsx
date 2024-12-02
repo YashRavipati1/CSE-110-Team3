@@ -10,6 +10,7 @@ import { NutritionEntry, User, MealRec } from '../types/types';
 import { getMealRec } from '../api/mealRec';
 import { MealRecCard } from '../components/MealRecCard';
 
+// Gets 3 recommended meals based on the user's goals and today's progress
 async function getRecommendedMeals(currentUser: User | null) {
     let CALORIE_GOAL = currentUser?.caloriesGoal ?? 2200
     let PROTEIN_GOAL = currentUser?.proteinGoal ?? 150
