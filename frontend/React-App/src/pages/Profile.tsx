@@ -58,25 +58,36 @@ const EntryItem = (props: EntryItemProps) => {
     );
 };
 
-const handleSubmit = async (email: string, weightGoal: number) => {
-    if (isNaN(Number(weightGoal))) {
-        alert("Invalid Input");
-        return;
-    } else {
-        const updates: { weightGoal: number } = { weightGoal: Number(weightGoal) };
+const handleSubmit = async (email: string, weightGoal: number, caloriesGoal: number, proteinGoal: number, fatGoal: number, carbGoal: number) => {
+    try {
+        const updates = {
+            weightGoal: Number(weightGoal),
+            caloriesGoal: Number(caloriesGoal),
+            proteinGoal: Number(proteinGoal),
+            fatGoal: Number(fatGoal),
+            carbGoal: Number(carbGoal)
+        };
         const response = await editUser(email, updates);
         if (response.success) {
             alert("Successfully saved!");
+            window.location.reload();
         }
         else {
             alert("Failed to save!");
         }
+    } catch (error) {
+        alert("Failed to save: " + error);
     }
 }
 
 export const Profile = () => {  
     const { currentUser } = useContext(DataContext);
+    // State variables for all goals using current values or default values
     const [weightGoal, setWeightGoal] = useState(currentUser?.weightGoal ?? 0);
+    const [calorieGoal, setCalorieGoal] = useState(currentUser?.caloriesGoal ?? 2200);
+    const [proteinGoal, setProteinGoal] = useState(currentUser?.proteinGoal ?? 150);
+    const [fatGoal, setFatGoal] = useState(currentUser?.fatGoal ?? 75);
+    const [carbGoal, setCarbGoal] = useState(currentUser?.carbGoal ?? 300);
 
     const firstName = currentUser?.firstName ?? "";
     const lastName = currentUser?.lastName ?? "";
@@ -90,7 +101,11 @@ export const Profile = () => {
                     <Logout />
                 </HeaderRow>
                 <EntryItem title="Weight Goal" value={weightGoal} changeFunction={(value) => setWeightGoal(value)} />
-                <SubmitButton onClick={() => handleSubmit(currentUser?.email ?? "", weightGoal)} text="Save" style={{ marginTop: "20px" }}></SubmitButton>
+                <EntryItem title="Calorie Goal" value={calorieGoal} changeFunction={(value) => setCalorieGoal(value)} />
+                <EntryItem title="Protein Goal" value={proteinGoal} changeFunction={(value) => setProteinGoal(value)} />
+                <EntryItem title="Fat Goal" value={fatGoal} changeFunction={(value) => setFatGoal(value)} />
+                <EntryItem title="Carb Goal" value={carbGoal} changeFunction={(value) => setCarbGoal(value)} />
+                <SubmitButton onClick={() => handleSubmit(currentUser?.email ?? "", weightGoal, calorieGoal, proteinGoal, fatGoal, carbGoal)} text="Save" style={{ marginTop: "20px" }}></SubmitButton>
             </ProfileContainer>
     );
 };

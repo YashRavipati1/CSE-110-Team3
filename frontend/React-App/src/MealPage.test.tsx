@@ -5,11 +5,12 @@ import { DataContext } from "../src/contexts/DataContext";
 import MealPage from "../src/pages/MealPage";
 // Import the Firebase User type
 import { User as FirebaseUser } from "firebase/auth";
-import { getAllNutritionForUser } from '../src/api/nutrition'; 
+import { getAllNutritionForUser, getNutritionForUser } from '../src/api/nutrition'; 
 import { MemoryRouter } from 'react-router-dom';
 
 jest.mock("../src/api/nutrition", () => ({
   getAllNutritionForUser: jest.fn(),
+  getNutritionForUser: jest.fn()
 }));
 
 describe("Meal Page Tests", () => {
@@ -63,17 +64,23 @@ describe("Meal Page Tests", () => {
     proteinGoal: 150,
     fatGoal: 50,
     carbGoal: 250,
-    nutritionRecords: [],
-    exerciseRecords: [],
+    nutritionRecords: [] as [],
+    exerciseRecords: [] as [],
   };
 
   jest.mock('../src/api/nutrition', () => ({
     getAllNutritionForUser: jest.fn(),
+    getNutritionForUser: jest.fn()
   })); 
 
   beforeEach(() => {
     jest.resetAllMocks();
     (getAllNutritionForUser as jest.Mock).mockResolvedValue({
+      success: true,
+      data: mockMeals,
+    });
+
+    (getNutritionForUser as jest.Mock).mockResolvedValue({
       success: true,
       data: mockMeals,
     });
