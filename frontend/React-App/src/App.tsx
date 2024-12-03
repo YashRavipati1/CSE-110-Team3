@@ -5,8 +5,9 @@ import { Home } from './pages/Home';
 import { Profile } from './pages/Profile';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthContext, AuthProvider } from './contexts/AuthContext';
-import { DataProvider, DataContext } from './contexts/DataContext';
+import { DataProvider } from './contexts/DataContext';
 import './App.css';
+import EditWeight from './pages/EditWeight';
 
 
 import MealPage from './pages/MealPage';
@@ -30,11 +31,11 @@ function AppRouter() {
               <Route path="/" element={<Home />} />
               <Route path="/mood" element={<MoodPage />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="*" element={<Navigate to="/" />} />
+              <Route path="/edit-weight/:email" element={<EditWeight />} />
               <Route path="/meals" element={<MealPage />} />
               <Route path="/add-meal" element={<AddMealPage />} />
               <Route path="/edit-meal/:id" element={<EditMeal />} />
-              
+              <Route path="*" element={<Navigate to="/" />} />
             </>
           )}
         </Routes>

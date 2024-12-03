@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import RangeSlider from './RangeSlider';
-import './rangeSlider.css';
-import './MoodPage.css';
+import '../css_styling_files/rangeSlider.css';
+import '../css_styling_files/MoodPage.css';
 import { createMoodEntry } from '../api/mood';
 
 const MoodPage: React.FC = () => {

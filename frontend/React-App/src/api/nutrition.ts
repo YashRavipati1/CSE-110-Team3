@@ -1,7 +1,6 @@
-// need to import this because it is an interface that is used in the code
-import { NutritionEntry, NewOrEditedNutritionEntry } from '../types/types';
+import { NewOrEditedNutritionEntry } from '../types/types';
 
-
+// Gets all nutrition entires for a user on a specific day
 export const getNutritionForUser = async (email: string, date: Date) => {
     const response = await fetch(`http://localhost:8080/nutrition/all/${email}/${date.toISOString().split('T')[0]}`, {
         method: 'GET',
@@ -108,11 +107,11 @@ export const getAllNutritionForUser = async (email: string)=> {
 
 // Zere: To edit meal, gets the nutrition data for a specific user and meal, using the unique email and meal id
 export const getNutritionRecordById = async (id: string, email: string): Promise<any> => {
-    const response = await fetch(`http://localhost:8080/nutrition/${email}/${id}`, {
+    const response = await fetch(`http://localhost:8080/nutrition/nutID/${email}/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-        }
+        },
     });
     if (!response.ok) {
         return { success: false, data: await response.text() };

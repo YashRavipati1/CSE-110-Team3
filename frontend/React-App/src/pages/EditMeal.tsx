@@ -92,43 +92,50 @@ const EditMealPage = () => {
 
     // returning the forms, using the same UI as add page
     return (
-        <form onSubmit={handleSubmit}>
-            <h1>Edit Meal</h1>
-            <div>
-                <label>Meal Name:</label>
-                <input type="text" value={mealName} onChange={e => setMealName(e.target.value)} required />
-            </div>
-            <div>
-                <label>Meal Type:</label>
-                <select value={mealType} onChange={e => setMealType(e.target.value)} required>
-                    <option value="" disabled>Select a meal type</option>
-                    <option value="Breakfast">Breakfast</option>
-                    <option value="Lunch">Lunch</option>
-                    <option value="Dinner">Dinner</option>
-                    <option value="Snack">Snack</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-            <div>
-                <label>Calories:</label>
-                <input type="number" value={calories} onChange={e => setCalories(e.target.value)} required />
-            </div>
-            <div>
-                <label>Protein:</label>
-                <input type="number" value={protein} onChange={e => setProtein(e.target.value)} required />
-            </div>
-            <div>
-                <label>Fats:</label>
-                <input type="number" value={fats} onChange={e => setFats(e.target.value)} required />
-            </div>
-            <div>
-                <label>Carbs:</label>
-                <input type="number" value={carbs} onChange={e=> setCarbs(e.target.value)} required />
-            </div>
-            <div>
-                <Button text="Back" size="large" color="#298e46" route = "/meals"/>
-                <Button text="Save Meal" size="large" color="#298e46" />
-                
+        <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', textAlign: 'center'}}>
+                <h1>Edit Meal</h1>
+                <div>
+                    <label>Meal Name:</label>
+                    <br />
+                    <input type="text" value={mealName} onChange={e => setMealName(e.target.value)} required />
+                </div>
+                <div>
+                    <label>Meal Type:</label>
+                    <br />
+                    <select value={mealType} onChange={e => setMealType(e.target.value)} required>
+                        <option value="" disabled>Select a meal type</option>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Snack">Snack</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Calories:</label>
+                    <br />
+                    <input type="number" value={calories} onChange={e => setCalories(e.target.value)} required />
+                </div>
+                <div>
+                    <label>Protein:</label>
+                    <br />
+                    <input type="number" value={protein} onChange={e => setProtein(e.target.value)} required />
+                </div>
+                <div>
+                    <label>Fats:</label>
+                    <br />
+                    <input type="number" value={fats} onChange={e => setFats(e.target.value)} required />
+                </div>
+                <div>
+                    <label>Carbs:</label>
+                    <br />
+                    <input type="number" value={carbs} onChange={e=> setCarbs(e.target.value)} required />
+                </div>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px'}}>
+                    <Button text="Save Meal" size="large" color="#298e46" />
+                    <Button text="Back" size="large" color="#298e46" route = "/meals"/>
+                </div>
             </div>
         </form>
     );

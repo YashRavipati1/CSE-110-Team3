@@ -63,11 +63,11 @@ router.get("/all/:email", async (req, res) => {
     }
 });
 
-// Get a specific nutrition entry by email and meal _id, for editing purposes
-router.get("/:email/:_id", async (req, res) => {
-    let collection = await db.collection("nutritionEntries");
-    let query = { user: req.params.email, _id: ObjectId(req.params._id) };
 
+router.get("/nutID/:email/:_id", async (req, res) => {
+    let { email, _id } = req.params;
+    let collection = await db.collection("nutritionEntries");
+    let query = { user: email, _id: ObjectId(_id) };
     try {
         let results = await collection.find(query).toArray();
         if (results.length > 0) {

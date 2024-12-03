@@ -1,7 +1,6 @@
 import React, { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
-
-import { User, getUser } from "../api/users";
-
+import { getUser } from "../api/users";
+import { User } from "../types/types";
 import { AuthContext } from "./AuthContext";
 
 

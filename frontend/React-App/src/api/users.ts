@@ -1,19 +1,4 @@
 // Zere: changed nutrition and exercise records to any[] to avoid type errors
-export type User = {
-    email: string,
-    firstName: string,
-    lastName: string,
-    age: number,
-    height: number,
-    weight: number,
-    weightGoal: number,
-    caloriesGoal: number,
-    proteinGoal: number,
-    fatGoal: number,
-    carbGoal: number,
-    nutritionRecords: any[],
-    exerciseRecords: any[]
-}
 
 export type createUserRequest = {
     email: string,

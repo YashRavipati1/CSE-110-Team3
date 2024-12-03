@@ -5,11 +5,45 @@
 
 import React, { useEffect, useState, useContext } from 'react';
 import MealCard from '../components/MealCard';
-import { deleteNutritionRecord, getAllNutritionForUser, getNutritionForUserDateRange } from '../api/nutrition';
-import { Link, useNavigate } from 'react-router-dom';
+import { deleteNutritionRecord, getNutritionForUser, getAllNutritionForUser, getNutritionForUserDateRange } from '../api/nutrition';
+import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import { DataContext } from "../contexts/DataContext";
-import { NutritionEntry } from '../types/types';
+import { NutritionEntry, User, MealRec } from '../types/types';
+import { getMealRec } from '../api/mealRec';
+import { MealRecCard } from '../components/MealRecCard';
+
+// Gets 3 recommended meals based on the user's goals and today's progress
+async function getRecommendedMeals(currentUser: User | null) {
+    let CALORIE_GOAL = currentUser?.caloriesGoal ?? 2200
+    let PROTEIN_GOAL = currentUser?.proteinGoal ?? 150
+    let FAT_GOAL = currentUser?.fatGoal ?? 75
+    let CARB_GOAL = currentUser?.carbGoal ?? 300
+    const response = await getNutritionForUser(currentUser?.email ?? "", new Date());
+    if (response.success) {
+        const meals = response.data;
+        let calories = 0;
+        let protein = 0;
+        let fats = 0;
+        let carbohydrates = 0;
+        for (const meal of meals) {
+            calories += meal.calories;
+            protein += meal.protein;
+            fats += meal.fats;
+            carbohydrates += meal.carbohydrates;
+        }
+        const calType = (CALORIE_GOAL - calories > 500) ? "High" : "Low";
+        const pType = (PROTEIN_GOAL - protein > 50) ? "High" : "Low";
+        const fType = (FAT_GOAL - fats > 30) ? "High" : "Low";
+        const cType = (CARB_GOAL - carbohydrates > 150) ? "High" : "Low";
+        const mealRecs = await getMealRec(calType, pType, fType, cType);
+        if (!mealRecs.success) {
+            console.error("Failed to get meal recommendations");
+            return [];
+        }
+        return mealRecs.data;
+    }
+}
 
 
 
@@ -23,18 +57,59 @@ const MealPage: React.FC = () => {
     const [endDate, setEndDate] = useState(new Date()); // Set the end date to today
     const [filterType, setFilterType] = useState("all"); // Set the default filter type to day, this will be used to filter the meals by day, week, month, year, or all
 
+    const [mealRecs, setMealRecs] = useState<MealRec[]>([]);
 
+    // Function to calculate the start and end date for the preset ranges (day/week/month/year)
+    // Argument it takes is the type of range to calculate, e.g. day, week, month, year from filterType
+    // It returns an object with the start and end date for the range, both are Date objects
+    const calculatePresetRange = (type: string) => {
+        const currentDate = new Date(); // Current date& time
+        const startOfToday = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate(),
+            0, 0, 0, 0 // Explicitly set time to midnight, because we want start of day
+        );
+    
+        let start;
+    
+        switch (type) {
+            case "week":
+                start = new Date(startOfToday);
+                start.setDate(start.getDate() - 7);
+                break;
+            case "month":
+                start = new Date(startOfToday);
+                start.setMonth(start.getMonth() - 1);
+                break;
+            case "year":
+                start = new Date(startOfToday);
+                start.setFullYear(start.getFullYear() - 1);
+                break;
+            default: // "day"
+                start = startOfToday; // For current day, using startOfToday
+        }
+        // current time
+        const end = currentDate;
+    
+        console.log("Preset range from the CALCULATE PRESET RANGE FUNCTION:", { start, end });
+        return { start, end };
+    };
 
     // Fetch meals for the user when the page loads
     useEffect(() => {
         // Get the current user's email from the context
         const userEmail = currentUser?.email;
-        console.log("User email from MealPage.tsx:", userEmail);
+
         // To prevent undefined email errors
         if (!userEmail) {
             console.error("User email is undefined");
             return; // Exit if userEmail is undefined
         }
+
+        getRecommendedMeals(currentUser).then(response => {
+            setMealRecs(response);
+        })
     
         // Fetch meals using a separate API function for all meals, no date ranges
         if(filterType === 'all'){
@@ -71,7 +146,7 @@ const MealPage: React.FC = () => {
         setEndDate(end); 
 
         // Fetch meals using a separate API function for a specific date range
-        console.log("Dates range from MealPage.tsx:", start, end);
+    
         getNutritionForUserDateRange(userEmail, start, end).then(response => {
             // check what the API returned for debugging
             //console.log("API response for a specific option from date range:", response); 
@@ -85,6 +160,9 @@ const MealPage: React.FC = () => {
                  In simple terms, it's like copying the object from the API response
                 */
 
+    
+    
+           
                 setMeals(response.data.map((meal: NutritionEntry) => ({
                     ...meal,
                     id: meal._id  // making sure that `_id` from MongoDB is mapped to `id` expected by frontend
@@ -127,48 +205,28 @@ const MealPage: React.FC = () => {
     // The id is used to fetch the meal data from the database
     // The id is passed to the edit page to know which meal to edit
     const handleEdit = (id: string) => {
-        console.log("Navigate to edit page for meal:", id);
         navigate(`/edit-meal/${id}`);
     };
 
-    // Function to calculate the start and end date for the preset ranges (day/week/month/year)
-    // Argument it takes is the type of range to calculate, e.g. day, week, month, year from filterType
-    // It returns an object with the start and end date for the range, both are Date objects
-    const calculatePresetRange = (type: string) => {
-        const currentDate = new Date(); // Current date& time
-        const startOfToday = new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            currentDate.getDate(),
-            0, 0, 0, 0 // Explicitly set time to midnight, because we want start of day
-        );
-    
-        let start;
-    
-        switch (type) {
-            case "week":
-                start = new Date(startOfToday);
-                start.setDate(start.getDate() - 7);
-                break;
-            case "month":
-                start = new Date(startOfToday);
-                start.setMonth(start.getMonth() - 1);
-                break;
-            case "year":
-                start = new Date(startOfToday);
-                start.setFullYear(start.getFullYear() - 1);
-                break;
-            default: // "day"
-                start = startOfToday; // For current day, using startOfToday
-        }
-        // current time
-        const end = currentDate;
-    
-        console.log("Preset range from the CALCULATE PRESET RANGE FUNCTION:", { start, end });
-        return { start, end };
-    };
+
     
 
+    // When the plus button on the mealRec card is clicked, refresh the shown meals
+    const handlePlus = () => {
+        getAllNutritionForUser(currentUser?.email ?? "").then(response => {
+    
+            if (response.success) {
+                setMeals(response.data.map((meal: NutritionEntry) => ({
+                    ...meal,
+                    id: meal._id  // making sure that `_id` from MongoDB is mapped to `id` expected by frontend
+                })));
+            } else {
+                console.error("Failed to fetch meals:", response.data); // Error logging if fetch failed
+            }
+        }).catch(error => {
+            console.error("Error fetching meals:", error); // Catch any network or parsing errors
+        });
+    }
 
     
     return (
@@ -198,7 +256,10 @@ const MealPage: React.FC = () => {
                     
                 </p>
             </div>
+            <div className='header' style={{paddingLeft: '20px', paddingTop: '20px'}}>
+                <h1>Meal List</h1>
                 <Button icon="add" text="Add Meal" size="large" color="#298e46" route = "/add-meal"/>
+            </div>
             {meals.length > 0 ? (
             meals.map(meal => (
                 <MealCard
@@ -212,10 +273,34 @@ const MealPage: React.FC = () => {
             <p>No meals to display.</p>  // Provide feedback when no meals are available
             
         )}
-        <Button text = "Back" size = "large" color = "#298e46" route = "/"/>
+        <h1 style={{paddingLeft: '20px'}}>Recommended Meals</h1>
+        {mealRecs.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
+                {mealRecs.map(mealRec => (
+                    <MealRecCard
+                        meal={mealRec.title}
+                        calories={mealRec.calories}
+                        protein={mealRec.protein}
+                        carbs={mealRec.carbs}
+                        fats={mealRec.fats}
+                        calType={mealRec.calType}
+                        pType={mealRec.pType}
+                        fType={mealRec.fType}
+                        cType={mealRec.cType}
+                        onPlus={handlePlus}
+                    />
+                ))}
+            </div>
+        ) : (
+            <p>No recommended meals to display.</p>
+        )}
+        <div style={{paddingLeft: '20px'}}>
+            <Button text = "Back" size = "large" color = "#298e46" route = "/"/>
+        </div>
         </div>
         
     );
 };
 
 export default MealPage;
+
