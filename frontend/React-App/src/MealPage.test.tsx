@@ -1,12 +1,11 @@
-import React from 'react';
+import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { AuthContext } from "../src/contexts/AuthContext";
 import { DataContext } from "../src/contexts/DataContext";
 import MealPage from "../src/pages/MealPage";
-// Import the Firebase User type
+import { MemoryRouter } from "react-router-dom";
 import { User as FirebaseUser } from "firebase/auth";
-import { getAllNutritionForUser, getNutritionForUserDateRange } from '../src/api/nutrition'; 
-import { MemoryRouter } from 'react-router-dom';
+import { getAllNutritionForUser } from "../src/api/nutrition";
 
 jest.mock("../src/api/nutrition", () => ({
   getAllNutritionForUser: jest.fn(),
@@ -14,10 +13,17 @@ jest.mock("../src/api/nutrition", () => ({
 
 describe("Meal Page Tests", () => {
   const mockMeals = [
-    { _id: "1", name: "Breakfast Bagel", calories: 300, protein: 20, fats: 10, carbohydrates: 30 },
+    {
+      _id: "1",
+      name: "Breakfast Bagel",
+      calories: 300,
+      protein: 20,
+      fats: 10,
+      carbohydrates: 30,
+      date: "2024-12-02T12:00:00.000Z",
+    },
   ];
 
-  // Create a mock Firebase User
   const mockAuthUser: FirebaseUser = {
     uid: "12345",
     email: "testuser@example.com",
@@ -32,25 +38,15 @@ describe("Meal Page Tests", () => {
     displayName: "Test User",
     photoURL: null,
     getIdToken: jest.fn().mockResolvedValue("mock-id-token"),
-    getIdTokenResult: jest.fn().mockResolvedValue({
-      claims: {},
-      token: "mock-token",
-      authTime: "2023-01-01T00:00:00Z",
-      issuedAtTime: "2023-01-01T00:00:00Z",
-      expirationTime: "2024-01-01T00:00:00Z",
-      signInProvider: "password",
-      signInSecondFactor: null,
-    }),
+    getIdTokenResult: jest.fn(),
     reload: jest.fn(),
     toJSON: jest.fn(),
-    delete: jest.fn().mockResolvedValue(undefined),
+    delete: jest.fn(),
     phoneNumber: null,
     providerId: "firebase",
     tenantId: null,
   };
-  
 
-  // Application-level mock user
   const mockDataUser = {
     email: "testuser@example.com",
     firstName: "Test",
@@ -67,22 +63,17 @@ describe("Meal Page Tests", () => {
     exerciseRecords: [],
   };
 
-  jest.mock('../src/api/nutrition', () => ({
-    getAllNutritionForUser: jest.fn(),
-  })); 
-
   beforeEach(() => {
     jest.resetAllMocks();
-    (getAllNutritionForUser as jest.Mock).mockResolvedValue({
+    (getAllNutritionForUser as jest.Mock).mockResolvedValueOnce({
       success: true,
       data: mockMeals,
     });
   });
-  
 
   it("renders a list of meals for the user", async () => {
     render(
-      <MemoryRouter> 
+      <MemoryRouter>
         <AuthContext.Provider value={{ currentUser: mockAuthUser, signedIn: true }}>
           <DataContext.Provider value={{ currentUser: mockDataUser, refetchData: jest.fn() }}>
             <MealPage />
