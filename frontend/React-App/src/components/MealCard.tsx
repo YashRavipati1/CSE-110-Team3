@@ -61,6 +61,9 @@ const MealCard: React.FC<MealCardProps> = ({ meal, onEdit, onDelete }) => {
                 <p>Type: {meal.type}</p>
                 <p>Calories: {meal.calories}</p>
                 <span>Protein: {meal.protein} Carbs: {meal.carbohydrates} Fats: {meal.fats}</span>
+                <p id="date">Date Added: {new Date(meal.date).toISOString().split("T")[0]}</p>
+
+
             </div>
             <div className="meal-actions">
             <Button icon="edit" text="Edit Meal" size="medium" color="#298e46" onClick={() => onEdit(meal._id)} />

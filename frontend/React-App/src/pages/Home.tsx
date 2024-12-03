@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { MacroTracker } from "../components/macroTrackers";
 import { DataContext } from "../contexts/DataContext";
 import React, { useContext } from "react";
-import { getNutritionForUser } from "../api/nutrition";
+import { getNutritionForUserOneDay } from "../api/nutrition";
 import { NavButton } from "../components/navButton";
 import { Logout } from "../components/LogoutButton";
 import { Link } from "react-router-dom";
@@ -89,7 +89,7 @@ export const Home = () => {
 
     React.useEffect(() => {
         const fetchNutrition = async () => {
-            const response = await getNutritionForUser(currentUser?.email ?? "", new Date());
+            const response = await getNutritionForUserOneDay(currentUser?.email ?? "", new Date());
             if (response.success) {
                 const meals = response.data;
                 let calories = 0;
@@ -118,7 +118,7 @@ export const Home = () => {
                 <MacroTracker type="Carbohydrates" amount={nutritionData.carbohydrates} goal={currentUser?.carbGoal ?? 0}/>
             </MacroContainer>
                 <StyledWeightTracker>
-                    <WeightTracker />
+                   <WeightTracker /> 
                 </StyledWeightTracker>
             <HeaderRow>
             <Logout />
@@ -130,7 +130,7 @@ export const Home = () => {
                 {/*Zere: Added route to /meals instead of /nutrition */}
                 <NavButton text="Nutrition   +" route="/meals" />
                 <NavButton text="Mood   +" route="/mood" />
-                <NavButton text="Exercise   +" route="/exercise" />
+                <NavButton text="Exercise   +" route="/exercise" /> 
             </NavRow>
         </HomeContainer>
     );

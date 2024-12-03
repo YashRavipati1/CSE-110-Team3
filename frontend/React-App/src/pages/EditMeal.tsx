@@ -64,7 +64,7 @@ const EditMealPage = () => {
             name: mealName,
             user: userEmail,
             type: mealType,
-            date: new Date().toISOString().slice(0, 10),
+            date: new Date(),/// MIGHT NEED TO CHANGE TIS LATER BC IDK IF THE USER WANTS TO UPDATE THE ORIGINAL CREATION DATE
             calories: Number(calories),
             carbohydrates: Number(carbs),
             fats: Number(fats),

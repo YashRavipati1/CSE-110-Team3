@@ -7,6 +7,7 @@ import exercise from "./routes/exercise.mjs";
 import nutrition from "./routes/nutrition.mjs";
 import mood from "./routes/mood.mjs";
 
+
 const PORT = process.env.PORT || 8080;
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/users", users);
 app.use("/exercise", exercise);
 app.use("/nutrition", nutrition);
 app.use("/mood", mood);
+
 
 // Global error handling
 app.use((err, _req, res, next) => {

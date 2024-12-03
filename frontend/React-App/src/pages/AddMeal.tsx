@@ -33,7 +33,7 @@ const AddMealPage = () => {
             name: mealName, 
             user: userEmail, 
             type: mealType,
-            date: new Date().toISOString().slice(0, 10),
+            date: new Date(),
             calories: Number(calories),
             carbohydrates: Number(carbs), 
             fats: Number(fats),
@@ -41,6 +41,7 @@ const AddMealPage = () => {
         };
 
         try {
+            console.log('Adding new meal:', newMeal);
             const response = await addNutritionRecord(newMeal);
             if (response.acknowledged ) {
                 console.log('Meal added successfully!', response.insertedId);

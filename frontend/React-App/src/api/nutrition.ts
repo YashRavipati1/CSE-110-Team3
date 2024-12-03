@@ -1,7 +1,8 @@
+// need to import this because it is an interface that is used in the code
 import { NutritionEntry, NewOrEditedNutritionEntry } from '../types/types';
 
 
-export const getNutritionForUser = async (email: string, date: Date) => {
+export const getNutritionForUserOneDay = async (email: string, date: Date) => {
     const response = await fetch(`http://localhost:8080/nutrition/${email}/${date.toISOString().split('T')[0]}`, {
         method: 'GET',
         headers: {
@@ -25,10 +26,42 @@ export const getNutritionForUser = async (email: string, date: Date) => {
     }
 }
 
+export const getNutritionForUserDateRange = async (email: string, startDate: Date, endDate: Date) => {
+    const start = startDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const end = endDate ? endDate.toISOString().slice(0, 10) : undefined;
+
+  //  console.log("Querying for date range:", { start, end });
+ //   console.log(`Frontend Query: start=${startDate.toISOString().slice(0, 10)} end=${endDate.toISOString().slice(0, 10)}`);
+
+
+    try {
+        const response = await fetch(`http://localhost:8080/nutrition/${email}?start=${start}&end=${end}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        // Ensure the response is processed only once
+        if (!response.ok) {
+            const errorText = await response.text(); // Read the body once
+            console.error("Error response from server:", errorText);
+            return { success: false, data: errorText };
+        }
+
+        const data = await response.json(); // Read the body only once here
+        return { success: true, data };
+    } catch (error) {
+        console.error("Error in getNutritionForUserDateRange:", error);
+        return { success: false, data: "Unexpected error occurred." };
+    }
+};
+
+
 // Zere: Gets all nutrition data for a specific user
 export const getAllNutritionForUser = async (email: string)=> {
     console.log("Checking all entries for from api for user:", email);
-    const response = await fetch(`http://localhost:8080/nutrition/${email}`, {
+    const response = await fetch(`http://localhost:8080/nutrition/all/${email}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

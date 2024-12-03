@@ -13,6 +13,7 @@ import MealPage from './pages/MealPage';
 import AddMealPage from './pages/AddMeal';
 import EditMeal from './pages/EditMeal';
 
+
 function AppRouter() {
   const { signedIn } = useContext(AuthContext);
   return (
@@ -33,6 +34,7 @@ function AppRouter() {
               <Route path="/meals" element={<MealPage />} />
               <Route path="/add-meal" element={<AddMealPage />} />
               <Route path="/edit-meal/:id" element={<EditMeal />} />
+              
             </>
           )}
         </Routes>
