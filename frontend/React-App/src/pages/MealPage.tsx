@@ -1,6 +1,5 @@
 // src/pages/MealPage.tsx
 import React, { useEffect, useState, useContext } from 'react';
-//import { Meal } from '../types/types';
 import MealCard from '../components/MealCard';
 import { deleteNutritionRecord, getNutritionForUser, getAllNutritionForUser } from '../api/nutrition';
 import { useNavigate } from 'react-router-dom';

@@ -63,8 +63,8 @@ describe("Meal Page Tests", () => {
     proteinGoal: 150,
     fatGoal: 50,
     carbGoal: 250,
-    nutritionRecords: [],
-    exerciseRecords: [],
+    nutritionRecords: [] as [],
+    exerciseRecords: [] as [],
   };
 
   jest.mock('../src/api/nutrition', () => ({

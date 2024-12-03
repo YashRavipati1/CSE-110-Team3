@@ -8,8 +8,6 @@ import { Logout } from "../components/LogoutButton";
 import { Link } from "react-router-dom";
 import { WeightTracker } from "../components/WeightTracker";
 
-import { WeightTracker } from "../components/WeightTracker";
-
 export const HeaderRow = styled.div`
     display: flex;
     flex-direction: row;

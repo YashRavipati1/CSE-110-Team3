@@ -70,6 +70,7 @@ const handleSubmit = async (email: string, weightGoal: number, caloriesGoal: num
         const response = await editUser(email, updates);
         if (response.success) {
             alert("Successfully saved!");
+            window.location.reload();
         }
         else {
             alert("Failed to save!");
