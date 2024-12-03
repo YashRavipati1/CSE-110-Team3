@@ -26,14 +26,32 @@ export const getNutritionForUser = async (email: string, date: Date) => {
     }
 }
 
+// Zere: Function to convert date to PST, to keep the date consistent throughout the application
+const convertToPST = (inputDate: Date): string => {
+    const options: Intl.DateTimeFormatOptions = {
+        timeZone: "America/Los_Angeles",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    };
+    const pstDate = new Intl.DateTimeFormat("en-US", options).format(inputDate);
+
+    // Formating as YYYY-MM-DD
+    const [month, day, year] = pstDate.split("/");
+    return `${year}-${month}-${day}`;
+};
+
 // Zere: Gets all nutrition data for a specific user within a date range, for filtering purposes
 export const getNutritionForUserDateRange = async (email: string, startDate: Date, endDate: Date) => {
-    const start = startDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
-    const end = endDate ? endDate.toISOString().slice(0, 10) : undefined;
 
-  //  console.log("Querying for date range:", { start, end });
- //   console.log(`Frontend Query: start=${startDate.toISOString().slice(0, 10)} end=${endDate.toISOString().slice(0, 10)}`);
+    //console.log("Start date from nutrition.ts:", startDate, "End date from nutrition.ts:", endDate);
 
+    const start = convertToPST(startDate); // Format as YYYY-MM-DD
+    const end = convertToPST(endDate); // Format as YYYY-MM-DD
+
+    //console.log("Start date from nutrition.ts AFTER:", start, "End date from nutrition.ts AFTER:", end);
+
+    // Passed in as YYYY-MM-DD format
 
     try {
         const response = await fetch(`http://localhost:8080/nutrition/dateRange/${email}?start=${start}&end=${end}`, {

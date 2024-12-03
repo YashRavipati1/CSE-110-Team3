@@ -24,11 +24,12 @@ const MealPage: React.FC = () => {
     const [filterType, setFilterType] = useState("all"); // Set the default filter type to day, this will be used to filter the meals by day, week, month, year, or all
 
 
+
     // Fetch meals for the user when the page loads
     useEffect(() => {
         // Get the current user's email from the context
         const userEmail = currentUser?.email;
-
+        console.log("User email from MealPage.tsx:", userEmail);
         // To prevent undefined email errors
         if (!userEmail) {
             console.error("User email is undefined");
@@ -70,7 +71,7 @@ const MealPage: React.FC = () => {
         setEndDate(end); 
 
         // Fetch meals using a separate API function for a specific date range
-        //console.log("Dates range from MealPage.tsx:", start, end);
+        console.log("Dates range from MealPage.tsx:", start, end);
         getNutritionForUserDateRange(userEmail, start, end).then(response => {
             // check what the API returned for debugging
             //console.log("API response for a specific option from date range:", response); 
@@ -131,11 +132,19 @@ const MealPage: React.FC = () => {
     };
 
     // Function to calculate the start and end date for the preset ranges (day/week/month/year)
+    // Argument it takes is the type of range to calculate, e.g. day, week, month, year from filterType
+    // It returns an object with the start and end date for the range, both are Date objects
     const calculatePresetRange = (type: string) => {
-        const currentDate = new Date();
-        const startOfToday = new Date(currentDate.toISOString().slice(0, 10)); // remove time from the date
-        let start; // let is used because the value will change based on the type, start is the start date of the range
-
+        const currentDate = new Date(); // Current date& time
+        const startOfToday = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate(),
+            0, 0, 0, 0 // Explicitly set time to midnight, because we want start of day
+        );
+    
+        let start;
+    
         switch (type) {
             case "week":
                 start = new Date(startOfToday);
@@ -150,12 +159,15 @@ const MealPage: React.FC = () => {
                 start.setFullYear(start.getFullYear() - 1);
                 break;
             default: // "day"
-                start = startOfToday; //changed this to a less specific date (no hours or numbers)
+                start = startOfToday; // For current day, using startOfToday
         }
-
-        //console.log("Preset range from the CALCULATE PRESET RANGE FUNCTION:", { start, end: currentDate });
-        return { start, end: currentDate };
+        // current time
+        const end = currentDate;
+    
+        console.log("Preset range from the CALCULATE PRESET RANGE FUNCTION:", { start, end });
+        return { start, end };
     };
+    
 
 
     

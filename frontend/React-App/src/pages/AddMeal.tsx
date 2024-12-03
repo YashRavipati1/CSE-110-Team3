@@ -29,6 +29,7 @@ const AddMealPage = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         
+        // Date is in PST here, when we capture it
         const newMeal = {
             name: mealName, 
             user: userEmail, 
