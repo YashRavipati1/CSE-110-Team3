@@ -106,8 +106,7 @@ router.get("/all/:email/:date", async (req, res) => {
         const startOfDay = new Date(`${date}T00:00:00.000Z`);
         const endOfDay = new Date(`${date}T23:59:59.999Z`);
 
-        console.log("IN NUTRITION.MJS: get :/email/:date");
-        console.log("Start of day from mjs (UTC):", startOfDay, "End of day from mjs (UTC):", endOfDay);
+        console.log("Start of day from mjs (PST):", startOfDay, "End of day from mjs (PST):", endOfDay);
 
         // Query for dates within the specified day range
         const query = {
@@ -144,11 +143,25 @@ router.post("/", async (req, res) => {
     try {
         const { date, ...rest } = req.body; // Extract the date field and the rest of the payload
 
+        console.log("Date from MJS:", date);
+
+        // Convert the input date to PST
+        const convertToPST = (inputDate) => {
+            const date = new Date(inputDate);
+            //PST offset (UTC -8 hours)
+            const utcOffset = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+            const pstDate = new Date(date.getTime() - utcOffset);
+        
+            return pstDate;
+        };
+        
+
         const newEntry = {
             ...rest,
-            date: new Date(date), // Convert the date field back to a Date object
+            date: convertToPST(date), // Convert the date to PST before saving
         };
 
+        console.log("New nutrition entry FROM MJS in PST:", newEntry);
         const collection = await db.collection("nutritionEntries");
         const result = await collection.insertOne(newEntry);
 
@@ -158,6 +171,8 @@ router.post("/", async (req, res) => {
         res.status(500).send("Error adding entry.");
     }
 });
+
+
 
 router.delete("/:id", async (req, res) => {
     const query = { _id: ObjectId(req.params.id) };
