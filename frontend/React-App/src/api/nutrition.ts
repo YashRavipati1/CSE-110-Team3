@@ -2,9 +2,9 @@ import { NewOrEditedNutritionEntry } from '../types/types';
 
 // Gets all nutrition entires for a user on a specific day
 export const getNutritionForUser = async (email: string, date: Date) => {
-    
+    const pstDate = convertToPST(date);
     console.log("Checking todays date for from api for user:", date);
-    const response = await fetch(`http://localhost:8080/nutrition/all/${email}/${date.toISOString().split('T')[0]}`, {
+    const response = await fetch(`http://localhost:8080/nutrition/all/${email}/${pstDate}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

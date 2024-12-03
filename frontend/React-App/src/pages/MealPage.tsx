@@ -20,33 +20,29 @@ async function getRecommendedMeals(currentUser: User | null) {
     let FAT_GOAL = currentUser?.fatGoal ?? 75
     let CARB_GOAL = currentUser?.carbGoal ?? 300
     const response = await getNutritionForUser(currentUser?.email ?? "", new Date());
+    let calories = 0;
+    let protein = 0;
+    let fats = 0;
+    let carbohydrates = 0;
     if (response.success) {
         const meals = response.data;
-        let calories = 0;
-        let protein = 0;
-        let fats = 0;
-        let carbohydrates = 0;
         for (const meal of meals) {
             calories += meal.calories;
             protein += meal.protein;
             fats += meal.fats;
             carbohydrates += meal.carbohydrates;
         }
-        const calType = (CALORIE_GOAL - calories > 500) ? "High" : "Low";
-        const pType = (PROTEIN_GOAL - protein > 50) ? "High" : "Low";
-        const fType = (FAT_GOAL - fats > 30) ? "High" : "Low";
-        const cType = (CARB_GOAL - carbohydrates > 150) ? "High" : "Low";
-        const mealRecs = await getMealRec(calType, pType, fType, cType);
-        if (!mealRecs.success) {
-            console.error("Failed to get meal recommendations");
-            return [];
-        }
-        return mealRecs.data;
     }
-    else if(response.data === "No nutrition entries found for the specified date.") {
-        console.error("No meals for", new Date());
+    const calType = (CALORIE_GOAL - calories > 500) ? "High" : "Low";
+    const pType = (PROTEIN_GOAL - protein > 50) ? "High" : "Low";
+    const fType = (FAT_GOAL - fats > 30) ? "High" : "Low";
+    const cType = (CARB_GOAL - carbohydrates > 150) ? "High" : "Low";
+    const mealRecs = await getMealRec(calType, pType, fType, cType);
+    if (!mealRecs.success) {
+        console.error("Failed to get meal recommendations");
         return [];
     }
+    return mealRecs.data;
 }
 
 
