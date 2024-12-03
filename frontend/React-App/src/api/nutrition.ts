@@ -82,7 +82,7 @@ export const getNutritionRecordById = async (id: string, email: string): Promise
 // Zere: adding a new function to add a nutrition record, for the add meal functionality
 export const addNutritionRecord = async (mealData: NewOrEditedNutritionEntry): Promise<any> => {
     const response = await fetch(`http://localhost:8080/nutrition`, {
-        method: 'POST',
+        method: 'POST', // POST creates a new entry in the database
         headers: {
             'Content-Type': 'application/json',
         },

@@ -7,29 +7,29 @@ import { NutritionEntry, NewOrEditedNutritionEntry } from '../types/types';
 import { DataContext } from "../contexts/DataContext";
 
 const AddMealPage = () => {
+
+    // Use state to store the form field values 
     const [mealName, setMealName] = useState('');
     const [mealType, setMealType] = useState('');
     const [calories, setCalories] = useState('');
     const [protein, setProtein] = useState('');
     const [fats, setFats] = useState('');
     const [carbs, setCarbs] = useState('');
+    // useNavigate hook to navigate to the meals page immediatly after adding a meal
     const navigate = useNavigate(); 
 
+    // Get the user email from the context, signed in user
     const userEmail = useContext(DataContext).currentUser?.email; 
     if (!userEmail) {
         console.error("User email is undefined");
-        return <div>Loading user data, email is undefined...</div>;  // Exit if userEmail is undefined & to prevent error & return empty div 
+        return <div>Cannot pull up user data, email is undefined...</div>;
     }
 
     // Function to handle form submission after the user has typed in their meal information
-    // This function will be called when the user clicks the "Save Meal" button
-    // It will send the meal data to the API to be saved in the database
-    // If the meal is saved successfully, the user will be navigated to the meals page
-    // If there is an error, it will be logged to the console
-    // The meal data is sent as a JSON object to the API
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const newMeal: NewOrEditedNutritionEntry = {
+        
+        const newMeal = {
             name: mealName, 
             user: userEmail, 
             type: mealType,
@@ -39,21 +39,20 @@ const AddMealPage = () => {
             fats: Number(fats),
             protein: Number(protein)
         };
-    
+
         try {
             const response = await addNutritionRecord(newMeal);
-            console.log("Data to be sent:", newMeal); 
-            if (response.acknowledged) {
+            if (response.acknowledged ) {
                 console.log('Meal added successfully!', response.insertedId);
                 navigate('/meals'); 
             } else {
-                console.log('Response from add meal:', response);
+                console.error('Failed to save meal:', response);
             }
         } catch (error) {
             console.error('Error saving meal:', error);
         }
     };
-    
+
     return (
         <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px'}}>
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', textAlign: 'center'}}>
