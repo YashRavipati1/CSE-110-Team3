@@ -5,7 +5,7 @@ import { DataContext } from "../src/contexts/DataContext";
 import MealPage from "../src/pages/MealPage";
 // Import the Firebase User type
 import { User as FirebaseUser } from "firebase/auth";
-import { getAllNutritionForUser } from '../src/api/nutrition'; 
+import { getAllNutritionForUser, getNutritionForUserDateRange } from '../src/api/nutrition'; 
 import { MemoryRouter } from 'react-router-dom';
 
 jest.mock("../src/api/nutrition", () => ({

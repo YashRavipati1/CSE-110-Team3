@@ -21,7 +21,7 @@ const MealPage: React.FC = () => {
     const [meals, setMeals] = useState<NutritionEntry[]>([]);
     const [startDate, setStartDate] = useState(new Date()); // Set the start date to today
     const [endDate, setEndDate] = useState(new Date()); // Set the end date to today
-    const [filterType, setFilterType] = useState("day"); // Set the default filter type to day, this will be used to filter the meals by day, week, month, year, or all
+    const [filterType, setFilterType] = useState("all"); // Set the default filter type to day, this will be used to filter the meals by day, week, month, year, or all
 
 
     // Fetch meals for the user when the page loads
