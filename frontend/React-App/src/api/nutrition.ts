@@ -2,6 +2,8 @@ import { NewOrEditedNutritionEntry } from '../types/types';
 
 // Gets all nutrition entires for a user on a specific day
 export const getNutritionForUser = async (email: string, date: Date) => {
+    
+    console.log("Checking todays date for from api for user:", date);
     const response = await fetch(`http://localhost:8080/nutrition/all/${email}/${date.toISOString().split('T')[0]}`, {
         method: 'GET',
         headers: {
@@ -79,7 +81,7 @@ export const getNutritionForUserDateRange = async (email: string, startDate: Dat
 // Zere: Gets all nutrition data for a specific user
 export const getAllNutritionForUser = async (email: string)=> {
     console.log("Checking all entries for from api for user:", email);
-    const response = await fetch(`http://localhost:8080/nutrition/all/${email}`, {
+    const response = await fetch(`http://localhost:8080/nutrition/all/email-no-date/${email}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

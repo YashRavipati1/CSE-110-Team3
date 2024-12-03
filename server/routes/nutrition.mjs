@@ -46,7 +46,7 @@ router.get("/dateRange/:email", async (req, res) => {
 
 
 // Zere: adding this to get all nutrition entries for a specific user by email, with no specific date
-router.get("/all/:email", async (req, res) => {
+router.get("/all/email-no-date/:email", async (req, res) => {
     //console.log("User email in nutrition.mjs: " + req.params.email);
     let collection = await db.collection("nutritionEntries");
     let query = { user: req.params.email };
@@ -101,6 +101,7 @@ router.get("/:id", async (req, res) => {
 router.get("/all/:email/:date", async (req, res) => {
     const { email, date } = req.params;
 
+    console.log("Received date from MJS:", date);
     try {
         // Parse the date from the request and construct the range
         const startOfDay = new Date(`${date}T00:00:00.000Z`);

@@ -43,6 +43,10 @@ async function getRecommendedMeals(currentUser: User | null) {
         }
         return mealRecs.data;
     }
+    else if(response.data === "No nutrition entries found for the specified date.") {
+        console.error("No meals for", new Date());
+        return [];
+    }
 }
 
 

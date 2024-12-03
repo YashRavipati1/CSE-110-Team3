@@ -5,6 +5,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getNutritionRecordById, updateNutritionRecord } from '../api/nutrition';
 import { NutritionEntry, NewOrEditedNutritionEntry } from '../types/types';
 import { DataContext } from "../contexts/DataContext";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 const EditMealPage = () => {
 
@@ -15,6 +17,7 @@ const EditMealPage = () => {
     const [protein, setProtein] = useState('');
     const [fats, setFats] = useState('');
     const [carbs, setCarbs] = useState('');
+    const [mealDate, setMealDate] = useState<Date | null>(null);
     const navigate = useNavigate();
 
     const { id } = useParams();  // This will get the id from the URL
@@ -41,6 +44,7 @@ const EditMealPage = () => {
                 setProtein(mealData.protein);
                 setFats(mealData.fats);
                 setCarbs(mealData.carbohydrates);
+                setMealDate(new Date(mealData.date));
             } else {
                 console.error('Failed to fetch meal details:', response.data);
             }
@@ -57,14 +61,22 @@ const EditMealPage = () => {
         }
         if (!id) {
             console.error("Meal ID is undefined");
-            return <div>Loading user data, email is undefined...</div>;  // Exit if userEmail is undefined & to prevent error & return empty div 
+            return <div>Error loading user data, email is undefined...</div>;  // Exit if userEmail is undefined & to prevent error & return empty div 
         }
+        /*if(!mealDate){
+            console.error("Meal date is undefined");
+            return <div>Error: Meal date is undefined...</div>;  // Exit if userEmail is undefined & to prevent error & return empty
+        }*/
         event.preventDefault();
+        if(!mealDate){
+            console.error("Meal date is undefined");
+            return <div>Error: Meal date is undefined...</div>;  // Exit if userEmail is undefined & to prevent error & return empty
+        }
         const updatedMeal: NewOrEditedNutritionEntry = {
             name: mealName,
             user: userEmail,
             type: mealType,
-            date: new Date(),/// MIGHT NEED TO CHANGE TIS LATER BC IDK IF THE USER WANTS TO UPDATE THE ORIGINAL CREATION DATE
+            date: mealDate, // Use the current date as a Date object
             calories: Number(calories),
             carbohydrates: Number(carbs),
             fats: Number(fats),
