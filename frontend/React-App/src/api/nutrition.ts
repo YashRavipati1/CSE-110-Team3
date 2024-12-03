@@ -2,8 +2,8 @@
 import { NutritionEntry, NewOrEditedNutritionEntry } from '../types/types';
 
 
-export const getNutritionForUserOneDay = async (email: string, date: Date) => {
-    const response = await fetch(`http://localhost:8080/nutrition/${email}/${date.toISOString().split('T')[0]}`, {
+export const getNutritionForUser = async (email: string, date: Date) => {
+    const response = await fetch(`http://localhost:8080/nutrition/all/${email}/${date.toISOString().split('T')[0]}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -26,6 +26,7 @@ export const getNutritionForUserOneDay = async (email: string, date: Date) => {
     }
 }
 
+// Zere: Gets all nutrition data for a specific user within a date range, for filtering purposes
 export const getNutritionForUserDateRange = async (email: string, startDate: Date, endDate: Date) => {
     const start = startDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
     const end = endDate ? endDate.toISOString().slice(0, 10) : undefined;
@@ -35,7 +36,7 @@ export const getNutritionForUserDateRange = async (email: string, startDate: Dat
 
 
     try {
-        const response = await fetch(`http://localhost:8080/nutrition/${email}?start=${start}&end=${end}`, {
+        const response = await fetch(`http://localhost:8080/nutrition/dateRange/${email}?start=${start}&end=${end}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

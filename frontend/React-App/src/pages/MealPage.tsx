@@ -11,9 +11,6 @@ import Button from '../components/Button';
 import { DataContext } from "../contexts/DataContext";
 import { NutritionEntry } from '../types/types';
 
-import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "react-datepicker";
-import { set } from 'date-fns';
 
 
 

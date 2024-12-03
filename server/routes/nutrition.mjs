@@ -4,7 +4,8 @@ import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
-router.get("/:email", async (req, res) => {
+// Get all nutrition entries for a specific user by email and date range, modified the path by adding dateRange in front
+router.get("/dateRange/:email", async (req, res) => {
     const { email } = req.params;
     const { start, end } = req.query;
 
@@ -44,9 +45,6 @@ router.get("/:email", async (req, res) => {
 });
 
 
-
-
-
 // Zere: adding this to get all nutrition entries for a specific user by email, with no specific date
 router.get("/all/:email", async (req, res) => {
     //console.log("User email in nutrition.mjs: " + req.params.email);
@@ -65,7 +63,7 @@ router.get("/all/:email", async (req, res) => {
     }
 });
 
-
+// Get a specific nutrition entry by email and meal _id, for editing purposes
 router.get("/:email/:_id", async (req, res) => {
     let collection = await db.collection("nutritionEntries");
     let query = { user: req.params.email, _id: ObjectId(req.params._id) };
@@ -82,7 +80,7 @@ router.get("/:email/:_id", async (req, res) => {
     }
 });
 
-
+// get all nutrition entries for all users in database
 router.get("/", async (req, res) => {
     let collection = await db.collection("nutritionEntries");
     let results = await collection.find({}).toArray();
@@ -91,20 +89,56 @@ router.get("/", async (req, res) => {
 
 // Zere: adding this to get a specific nutrition entry by unique ID
 router.get("/:id", async (req, res) => {
-    console.log("Checking user ID from edit meal in GET nutrition.mjs",req.params.id);
     let query = { _id: ObjectId(req.params._id) };
     let collection = await db.collection("nutritionEntries");
     let results = await collection.findOne(query);
     res.send(results).status(200);
 });
 
-router.get("/:email/:date", async (req, res) => {
+// Get all nutrition entries for a specific user by email and date, all in front of email to get all entries for a specific user first, then by date
+// can be found at http://localhost:8080/nutrition/all/:email/:date
+// 
+router.get("/all/:email/:date", async (req, res) => {
+    const { email, date } = req.params;
+
+    try {
+        // Parse the date from the request and construct the range
+        const startOfDay = new Date(`${date}T00:00:00.000Z`);
+        const endOfDay = new Date(`${date}T23:59:59.999Z`);
+
+        console.log("IN NUTRITION.MJS: get :/email/:date");
+        console.log("Start of day from mjs (UTC):", startOfDay, "End of day from mjs (UTC):", endOfDay);
+
+        // Query for dates within the specified day range
+        const query = {
+            user: email,
+            date: {
+                $gte: startOfDay,
+                $lte: endOfDay,
+            },
+        };
+
+        const collection = await db.collection("nutritionEntries");
+        const results = await collection.find(query).toArray();
+
+        if (results.length > 0) {
+            res.status(200).send(results);
+        } else {
+            res.status(404).send("No nutrition entries found for the specified date.");
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).send("Error fetching data.");
+    }
+});
+
+
+/*router.get("/:email/:date", async (req, res) => {
     let query = { user: req.params.email, date: req.params.date };
     let collection = await db.collection("nutritionEntries");
     let results = await collection.find(query).toArray();
-    console.log("Results from GET nutrition.mjs 2nd function: ", results);
     res.send(results).status(200);
-})
+})*/
 
 router.post("/", async (req, res) => {
     try {
