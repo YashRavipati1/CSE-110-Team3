@@ -134,7 +134,7 @@ const EditWeight = () => {
                 />
               </label>
             </div>
-            <div style={{ flex: 1, marginRight: "10px" }}>
+            <div style={{ flex: 1, marginRight: "10px", marginTop: "40px"}}>
               <label>
                 Weight:{" "}
                 <input

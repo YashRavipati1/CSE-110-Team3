@@ -14,6 +14,7 @@ import MealPage from './pages/MealPage';
 import AddMealPage from './pages/AddMeal';
 import EditMeal from './pages/EditMeal';
 
+
 function AppRouter() {
   const { signedIn } = useContext(AuthContext);
   return (

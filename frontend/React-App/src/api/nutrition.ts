@@ -2,7 +2,9 @@ import { NewOrEditedNutritionEntry } from '../types/types';
 
 // Gets all nutrition entires for a user on a specific day
 export const getNutritionForUser = async (email: string, date: Date) => {
-    const response = await fetch(`http://localhost:8080/nutrition/${email}/${date.toISOString().split('T')[0]}`, {
+    const pstDate = convertToPST(date);
+    console.log("Checking todays date for from api for user:", date);
+    const response = await fetch(`http://localhost:8080/nutrition/all/${email}/${pstDate}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -25,10 +27,61 @@ export const getNutritionForUser = async (email: string, date: Date) => {
     }
 }
 
+// Zere: Function to convert date to PST, to keep the date consistent throughout the application
+const convertToPST = (inputDate: Date): string => {
+    const options: Intl.DateTimeFormatOptions = {
+        timeZone: "America/Los_Angeles",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    };
+    const pstDate = new Intl.DateTimeFormat("en-US", options).format(inputDate);
+
+    // Formating as YYYY-MM-DD
+    const [month, day, year] = pstDate.split("/");
+    return `${year}-${month}-${day}`;
+};
+
+// Zere: Gets all nutrition data for a specific user within a date range, for filtering purposes
+export const getNutritionForUserDateRange = async (email: string, startDate: Date, endDate: Date) => {
+
+    //console.log("Start date from nutrition.ts:", startDate, "End date from nutrition.ts:", endDate);
+
+    const start = convertToPST(startDate); // Format as YYYY-MM-DD
+    const end = convertToPST(endDate); // Format as YYYY-MM-DD
+
+    //console.log("Start date from nutrition.ts AFTER:", start, "End date from nutrition.ts AFTER:", end);
+
+    // Passed in as YYYY-MM-DD format
+
+    try {
+        const response = await fetch(`http://localhost:8080/nutrition/dateRange/${email}?start=${start}&end=${end}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        // Ensure the response is processed only once
+        if (!response.ok) {
+            const errorText = await response.text(); // Read the body once
+            console.error("Error response from server:", errorText);
+            return { success: false, data: errorText };
+        }
+
+        const data = await response.json(); // Read the body only once here
+        return { success: true, data };
+    } catch (error) {
+        console.error("Error in getNutritionForUserDateRange:", error);
+        return { success: false, data: "Unexpected error occurred." };
+    }
+};
+
+
 // Zere: Gets all nutrition data for a specific user
 export const getAllNutritionForUser = async (email: string)=> {
     console.log("Checking all entries for from api for user:", email);
-    const response = await fetch(`http://localhost:8080/nutrition/${email}`, {
+    const response = await fetch(`http://localhost:8080/nutrition/all/email-no-date/${email}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

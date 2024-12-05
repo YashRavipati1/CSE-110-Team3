@@ -106,7 +106,7 @@ export const MealRecCard = ({ meal, calories, protein, carbs, fats, calType, pTy
             name: meal, 
             user: currentUser?.email ?? "", 
             type: mealType,
-            date: new Date().toISOString().slice(0, 10),
+            date: new Date(),
             calories: Number(calories),
             carbohydrates: Number(carbs), 
             fats: Number(fats),

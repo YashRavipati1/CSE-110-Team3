@@ -66,11 +66,11 @@ const ProfileButton = styled(Link)`
 `;
 
 const StyledWeightTracker = styled.div`
-    position: absolute; 
-    top: 90px; 
-    right: 150px; 
-    width: 900px; 
-    height: 500px; 
+    position: absolute;
+    top: 90px;
+    right: 150px;
+    width: 45vw;
+    height: 50vh;
     background-color: #f9f9f9;
     border: 2px solid #d1d1d1;
     border-radius: 10px;
@@ -117,7 +117,7 @@ export const Home = () => {
                 <MacroTracker type="Carbohydrates" amount={nutritionData.carbohydrates} goal={currentUser?.carbGoal ?? 0}/>
             </MacroContainer>
                 <StyledWeightTracker>
-                    <WeightTracker />
+                   <WeightTracker /> 
                 </StyledWeightTracker>
             <HeaderRow>
             <Logout />
@@ -129,7 +129,7 @@ export const Home = () => {
                 {/*Zere: Added route to /meals instead of /nutrition */}
                 <NavButton text="Nutrition   +" route="/meals" />
                 <NavButton text="Mood   +" route="/mood" />
-                <NavButton text="Exercise   +" route="/exercise" />
+                <NavButton text="Exercise   +" route="/exercise" /> 
             </NavRow>
         </HomeContainer>
     );

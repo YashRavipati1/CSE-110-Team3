@@ -22,6 +22,7 @@ app.use("/mood", mood);
 app.use("/mealrec", mealrec);
 app.use("/weights", weight);
 
+
 // Global error handling
 app.use((err, _req, res, next) => {
   res.status(500).send("Uh oh! An unexpected error occured.")

@@ -20,6 +20,9 @@ const MealCard: React.FC<MealCardProps> = ({ meal, onEdit, onDelete }) => {
                 <p>Type: {meal.type}</p>
                 <p>Calories: {meal.calories}</p>
                 <span>Protein: {meal.protein} Carbs: {meal.carbohydrates} Fats: {meal.fats}</span>
+                <p id="date">Date Added: {new Date(meal.date).toISOString().split("T")[0]}</p>
+
+
             </div>
             <div className="meal-actions">
                 <div style={{ paddingBottom: '15px'}}>

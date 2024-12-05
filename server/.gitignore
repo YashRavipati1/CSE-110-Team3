@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+# directories
+node_modules/
+
+
 # testing
 /coverage
 
@@ -25,3 +29,4 @@ yarn-error.log*
 =======
 .env
 
+.DS_Store

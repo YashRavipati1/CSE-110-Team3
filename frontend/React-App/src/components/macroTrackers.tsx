@@ -33,6 +33,7 @@ export interface ProgressBarProps {
     type: "Calories" | "Protein" | "Fats" | "Carbohydrates";
 }
 
+// Colored filler for each macro bar
 const Filler = (props: ProgressBarProps) => {
     let backgroundColor: string;
     switch(props.type){
@@ -53,6 +54,7 @@ const Filler = (props: ProgressBarProps) => {
     }
     return <FillerDiv className="filler" style={{ width: `${props.percentage}%`, background: backgroundColor }}></FillerDiv>;
 }
+
 export const ProgressBar = (props: ProgressBarProps) => {
     return (
         <ProgressBarDiv className="progress-bar">
@@ -61,10 +63,11 @@ export const ProgressBar = (props: ProgressBarProps) => {
     )
 }
 
+// Whole progress bar for a macronutrient
 export const MacroTracker = ({ amount, goal, type }: MacroTrackerProps) => {
     return (
         <TrackerContainer>
-            {type} - {amount}/{goal}
+            {type} - {Math.trunc(amount)}/{Math.trunc(goal)}
             <ProgressBar percentage={amount/goal*100} type={type} />
         </TrackerContainer>
     );

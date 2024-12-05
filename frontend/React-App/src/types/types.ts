@@ -24,11 +24,11 @@ export interface NutritionEntry {
     fats: number;
     carbohydrates: number;
     user: string;
-    date: string;
+    date: Date;
 }
 
 export interface NewOrEditedNutritionEntry {
-    date: string;
+    date: Date;
     name: string;
     type?: string;
     calories: number;
