@@ -66,11 +66,11 @@ const ProfileButton = styled(Link)`
 `;
 
 const StyledWeightTracker = styled.div`
-    position: absolute; 
-    top: 90px; 
-    right: 150px; 
-    width: 900px; 
-    height: 500px; 
+    position: absolute;
+    top: 90px;
+    right: 150px;
+    width: 45vw;
+    height: 50vh;
     background-color: #f9f9f9;
     border: 2px solid #d1d1d1;
     border-radius: 10px;

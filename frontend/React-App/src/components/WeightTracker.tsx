@@ -162,8 +162,8 @@ export const WeightTracker = () => {
       </ResponsiveContainer>
 
       {/* Button Section */}
-      <div style={{ marginTop: "20px" }}>
-        <div style={{ marginBottom: "10px" }}>
+      <div style={{ marginTop: "0px" }}>
+        <div style={{ marginBottom: "-15px" }}>
           <label>
             Enter Weight:{" "}
             <input
@@ -174,7 +174,7 @@ export const WeightTracker = () => {
             />
           </label>
         </div>
-        <div style={{ marginBottom: "10px" }}>
+        <div style={{ marginBottom: "5px" }}>
           <label>
             Enter Date:{" "}
             <input
